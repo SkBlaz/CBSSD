@@ -9,7 +9,7 @@ import json
 import urllib
 import networkx as nx
 import numpy as np
-import rdfmodule as rm
+#import rdfmodule as rm
 import sys
 import os
 
