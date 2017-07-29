@@ -13,15 +13,15 @@ import argparse
 if __name__ == '__main__':
 
     parser_init = argparse.ArgumentParser()
-    parser_init.add_argument("--step_size", help="When building the graph..")
-    parser_init.add_argument("--knowledge_graph", help="Nodelist input..")
-    parser_init.add_argument("--term_list", help="Input term list in arbitrary bio-format..")
-    parser_init.add_argument("--ontology_BK", help="Background ontology in .obo file..")
+    parser_init.add_argument("--step_size", help="When building the graph..") # Mandatory
+    parser_init.add_argument("--knowledge_graph", help="Nodelist input..") # Mandatory
+    parser_init.add_argument("--term_list", help="Input term list in arbitrary bio-format..") # Mandatory
+    parser_init.add_argument("--ontology_BK", help="Background ontology in .obo file..") # Mandatory
     parser_init.add_argument("--output_BK", help="Background knowledge outfile..")
-    parser_init.add_argument("--n3_samples", help="Learning samples, derived from the term list..")
-    parser_init.add_argument("--gaf_mapping", help="GAF map file, from term to GO..")
-    parser_init.add_argument("--rule_output", help="Results..")
-    parser_init.add_argument("--community_map", help="Identified subgroups..")
+    parser_init.add_argument("--n3_samples", help="Learning samples, derived from the term list..") # Mandatory
+    parser_init.add_argument("--gaf_mapping", help="GAF map file, from term to GO..") # Mandatory
+    parser_init.add_argument("--rule_output", help="Results..") # Mandatory
+    parser_init.add_argument("--community_map", help="Identified subgroups..") # Mandatory
     
     parsed = parser_init.parse_args()
     source = read_example_datalist(parsed.term_list,whole=True)
@@ -39,8 +39,9 @@ if __name__ == '__main__':
         print ("STEP 1: Writing pickle datadump..")        
         nx.write_gpickle(result_graph, parsed.knowledge_graph)
 
-    print("STEP 2: Background knowledge generation")        
-    obo2n3(parsed.ontology_BK, parsed.output_BK)
+    print("STEP 2: Background knowledge processing..")
+    if parsed.ontology_BK:
+        obo2n3(parsed.ontology_BK, parsed.output_BK)
 
     print ("STEP 3: subgroup identification")
     community_cluster_n3(parsed.knowledge_graph,parsed.term_list,parsed.gaf_mapping,parsed.n3_samples,parsed.community_map)
