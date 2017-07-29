@@ -1,2 +1,38 @@
 # CBSSD
-Community-based semantic subgroup discovery
+> **Community-based semantic subgroup discovery (CBSSD)** is an algorithm for knowledge discovery from
+> arbitrary term lists. Current version is targeted at biological term lists, e.g. gene or protein lists, yet
+> the methodology can be applied to any other problem as well.
+
+## Brief algorithm description
+
+> CBSSD uses term lists to query extensive databases of relevant knowledge, in order to construct knowledge graphs.
+> In such graphs, distinct communities can emerge, which can be of potential interest to the user. To obtain additional information
+> on obtained communities, semantic rule learning using extensive background knowledge can be used to derive sets of community-sp> ecific rules, which can yield some new insights about the studied phenomenon.
+
+
+## Example use on a simple list of epigenetics-related proteins (this was used as a validation dataset)
+
+
+```bash
+
+python3 CBSD.py --step_size 1 --knowledge_graph graph_datasets/snpsstep1.gpickle --term_list data/snps_clean.list --ontology_BK data/go-basic.obo --output_BK BK/uniprot.n3 --n3_samples samples/lovSamples.n3 --gaf_mapping data/goa_human.gaf --community_map community_map2.txt --rule_output OUTPUT/louvain2.txt
+
+```
+
+### Brief parameter descriptions:
+
+
+* step_size = size of terms used as a query to the BioMine graph crawler
+* knowledge_graph = saved result graph from BioMine crawl
+* term_list = list of input terms (MAIN INPUT)
+* ontology_BK = background knowledge in .obo format
+* output_BK = knowledge in .n3 format, used in this process
+* n3_samples = query dataset derived from terms
+* gaf_mapping = map from names to GO terms for SSD
+* community_map = nodes with assigned communities
+* rule_output = main result, rules for individual communities
+
+
+# Citation
+
+TBA, this work is to be published at the 2017 ECML as a short paper.
