@@ -25,10 +25,12 @@ def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,ma
         for line in im:
             parts = line.split("\t")
             try:
-                uniGO[parts[1]].append(parts[4])
+                uniGO[parts[1]].append(parts[4]) ## GO and ref both added
+                uniGO[parts[1]].append(parts[3]) 
             except:
                 pass
-    
+
+    print ("INFO: number of terms parsed:",len(uniGO.keys()))
     termlist = []
 
     with open(termlist_infile) as nl:
