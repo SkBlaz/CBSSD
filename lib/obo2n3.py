@@ -10,6 +10,7 @@ def obo2n3(obofile,n3out):
 
     ontology = defaultdict(list)
     current_term = ""
+    obofile = obofile.replace("/","")
 
     ## iterate through all files
     for onto in os.listdir(obofile):
@@ -25,8 +26,10 @@ def obo2n3(obofile,n3out):
                         if parts[0] == "is_a:":
                             ontology[current_term].append(parts[1])
                     except:
+
                         pass
 
+    print ("INFO: ontology terms added:", len(ontology.keys()))
     ## construct an ontology graph
     g = rdflib.graph.Graph()            
     KT = rdflib.Namespace('http://kt.ijs.si/hedwig#')
