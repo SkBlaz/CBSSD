@@ -1,14 +1,15 @@
 ## this will be the python interface for command line execution..
 
 ###### example
-#python3 CBSD.py --step_size 1 --knowledge_graph graph_datasets/snpsstep1.gpickle --term_list data/snps_clean.list --ontology_BK data/go-basic.obo --output_BK BK/uniprot.n3 --n3_samples samples/lovSamples.n3 --gaf_mapping data/goa_human.gaf --community_map community_map2.txt --rule_output OUTPUT/louvain2.txt
+#python3 CBSSD.py --step_size 10 --knowledge_graph example_outputs/epigenetics.gpickle --term_list example_inputs/epigenetics.list --ontology_BK example_inputs --output_BK example_outputs/epiBK.n3 --n3_samples example_outputs/epiSam.n3 --gaf_mapping example_inputs/goa_human.gaf --community_map example_outputs/EpiCom.txt --rule_output example_outputs/Epirules.txt 
+
 ######
 
 ## internal imports
 from lib.get_bk import *
 from lib.obo2n3 import *
 from lib.community_clustering import *
-from lib.dbMake import *
+from lib.dbMake import * ## this creates the mandatory databases
 
 import subprocess
 import argparse

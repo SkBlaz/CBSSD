@@ -3,24 +3,31 @@
 import argparse
 from collections import defaultdict
 import rdflib
+import os
 
 
 def obo2n3(obofile,n3out):
 
     ontology = defaultdict(list)
     current_term = ""
-        
-    with open(obofile) as obo:
-        for line in obo:            
-            parts = line.split()
-            try:
-                if parts[0] == "id:":
-                    current_term = parts[1]
-                if parts[0] == "is_a:":
-                    ontology[current_term].append(parts[1])
-            except:
-                pass
 
+    ## iterate through all files
+    for onto in os.listdir(obofile):
+        if ".obo" in onto:
+            obopath = obofile+"/"+onto
+            print ("INFO: parsing the",obopath)
+            with open(obopath) as obo:
+                for line in obo:            
+                    parts = line.split()
+                    try:
+                        if parts[0] == "id:":
+                            current_term = parts[1]
+                        if parts[0] == "is_a:":
+                            ontology[current_term].append(parts[1])
+                    except:
+                        pass
+
+    ## construct an ontology graph
     g = rdflib.graph.Graph()            
     KT = rdflib.Namespace('http://kt.ijs.si/hedwig#')
     amp_uri = 'http://kt.ijs.si/ontology/hedwig#'

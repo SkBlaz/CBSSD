@@ -10,12 +10,12 @@
 > on obtained communities, semantic rule learning using extensive background knowledge can be used to derive sets of community-sp> ecific rules, which can yield some new insights about the studied phenomenon.
 
 
-## Example use on a simple list of epigenetics-related proteins (this was used as a validation dataset)
+## Example use on a simple list of epigenetics-related proteins (this was used as a validation dataset). Mind that .obo files can be put in a separate folder, should more than one ontology be used as background knowledge.
 
 
 ```bash
 
-python3 CBSD.py --step_size 1 --knowledge_graph graph_datasets/snpsstep1.gpickle --term_list data/snps_clean.list --ontology_BK data/go-basic.obo --output_BK BK/uniprot.n3 --n3_samples samples/lovSamples.n3 --gaf_mapping data/goa_human.gaf --community_map community_map2.txt --rule_output OUTPUT/louvain2.txt
+python3 CBSSD.py --step_size 10 --knowledge_graph example_outputs/epigenetics.gpickle --term_list example_inputs/epigenetics.list --ontology_BK example_inputs --output_BK example_outputs/epiBK.n3 --n3_samples example_outputs/epiSam.n3 --gaf_mapping example_inputs/goa_human.gaf --community_map example_outputs/EpiCom.txt --rule_output example_outputs/Epirules.txt 
 
 ```
 
