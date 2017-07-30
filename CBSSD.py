@@ -4,9 +4,12 @@
 #python3 CBSD.py --step_size 1 --knowledge_graph graph_datasets/snpsstep1.gpickle --term_list data/snps_clean.list --ontology_BK data/go-basic.obo --output_BK BK/uniprot.n3 --n3_samples samples/lovSamples.n3 --gaf_mapping data/goa_human.gaf --community_map community_map2.txt --rule_output OUTPUT/louvain2.txt
 ######
 
+## internal imports
 from lib.get_bk import *
 from lib.obo2n3 import *
 from lib.community_clustering import *
+from lib.dbMake import *
+
 import subprocess
 import argparse
 
@@ -21,13 +24,20 @@ if __name__ == '__main__':
     parser_init.add_argument("--n3_samples", help="Learning samples, derived from the term list..") # Mandatory
     parser_init.add_argument("--gaf_mapping", help="GAF map file, from term to GO..") # Mandatory
     parser_init.add_argument("--rule_output", help="Results..") # Mandatory
+
     parser_init.add_argument("--community_map", help="Identified subgroups..") # Mandatory
+    parser_init.add_argument("--download_minimal", help="Download GAF and obo files..")
     
     parsed = parser_init.parse_args()
     source = read_example_datalist(parsed.term_list,whole=True)
 
     hedwig_command = "python2 hedwig/hedwig BK/ "+parsed.n3_samples+" -o "+parsed.rule_output+" -l --adjust=none --beam=50"
 
+
+    if parsed.download_minimal:
+        download_gaf()
+        download_obo()
+        
     
     if parsed.step_size:
 
