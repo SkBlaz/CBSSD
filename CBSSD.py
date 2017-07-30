@@ -35,28 +35,29 @@ if __name__ == '__main__':
     hedwig_command = "python2 hedwig/hedwig BK/ "+parsed.n3_samples+" -o "+parsed.rule_output+" -l --adjust=none --beam=50"
 
 
+    ## either download ontology or use own
     if parsed.download_minimal:
-        download_gaf()
-        download_obo()
-        
-    
-    if parsed.step_size:
+        download_obo("./ontologies")
+        obo2n3("./ontologies", parsed.output_BK)
 
-        ## generate and learn
-        
+    ## generate the graph
+    if parsed.step_size:
         request = make_request()
         result_graph = request.execute_query_inc(source,div=int(parsed.step_size),connected=False)
 
         print ("STEP 1: Writing pickle datadump..")        
         nx.write_gpickle(result_graph, parsed.knowledge_graph)
 
+    ## parse custom .obo folder
     print("STEP 2: Background knowledge processing..")
     if parsed.ontology_BK:
         obo2n3(parsed.ontology_BK, parsed.output_BK)
 
+    ## identify subgroups
     print ("STEP 3: subgroup identification")
     community_cluster_n3(parsed.knowledge_graph,parsed.term_list,parsed.gaf_mapping,parsed.n3_samples,parsed.community_map)
-        
+
+    ## learn details about subgroups
     print ("STEP 4: Learning")
     print("HEDWIG: "+hedwig_command)
     process = subprocess.Popen(hedwig_command.split(), stdout=subprocess.PIPE)

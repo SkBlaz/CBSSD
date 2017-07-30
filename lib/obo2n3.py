@@ -26,7 +26,6 @@ def obo2n3(obofile,n3out):
                         if parts[0] == "is_a:":
                             ontology[current_term].append(parts[1])
                     except:
-
                         pass
 
     print ("INFO: ontology terms added:", len(ontology.keys()))
