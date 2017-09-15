@@ -72,7 +72,7 @@ def draw_multilayer_default(network_list, display=True, nodesize=2,alphalevel=0.
             except:
                 pass
         
-        if background_shape == "rectangle":
+        if background_shape == "rectangle" or background_shape == "square" or background_shape == "sq":
             shape_subplot.add_patch(Rectangle(
                 (start_location_background, start_location_background), rectanglex, rectangley,
                 alpha=alphalevel, linestyle="dotted", fill=True,facecolor=facecolor_list_background[color]

@@ -34,8 +34,7 @@ def view_by_type(inputgraph,limit=False):
         networks.append(tmp_graph)
 
     print ("Visualizing..")
-    draw_multilayer_default(networks,background_shape="circle",display=False,labels=labs,networks_color="black")
-
+    draw_multilayer_default(networks,background_shape="circle",display=False,labels=labs,networks_color="rainbow")
     mx_edges = []
 
     for e in input_graph.edges():
@@ -47,8 +46,22 @@ def view_by_type(inputgraph,limit=False):
             mx_edges.append((e[0],e[1]))
             
     
-    draw_multiplex_default(networks,mx_edges,alphachannel=0.2,linepoints="-.",linecolor="black",curve_height=2,linmod="upper",linewidth=0.1)
+    draw_multiplex_default(networks,mx_edges,alphachannel=0.2,linepoints="-.",linecolor="black",curve_height=5,linmod="upper",linewidth=0.2)
 
+    plt.show()
+
+def view_basic(inputgraph):
+
+    input_graph = nx.read_gpickle(inputgraph)
+    type_segments = defaultdict(list)
+
+    ## for each node, remember the color..
+    ncold = [n[0].split("_")[0] for n in input_graph.nodes(data=True)]
+    d = {ni: indi for indi, ni in enumerate(set(ncold))}
+    cols = [d[ni] for ni in ncold]
+    nsizes = list(nx.degree(input_graph).values())
+    nx.draw_spring(input_graph,node_color=cols,node_size=nsizes)
     plt.show()
     
 view_by_type(parser.input_graph)
+view_basic(parser.input_graph)
