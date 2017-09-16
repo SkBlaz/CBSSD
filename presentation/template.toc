@@ -1,4 +1,11 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\defcounter {refsection}{0}\relax 
 \beamer@endinputifotherversion {3.36pt}
+\defcounter {refsection}{0}\relax 
 \beamer@sectionintoc {1}{General overview}{3}{0}{1}
+\defcounter {refsection}{0}\relax 
 \beamer@sectionintoc {2}{Problem definition}{5}{0}{2}
+\defcounter {refsection}{0}\relax 
 \beamer@sectionintoc {3}{Proposed approach}{6}{0}{3}
+\defcounter {refsection}{0}\relax 
+\beamer@sectionintoc {4}{Use case}{13}{0}{4}
