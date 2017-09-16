@@ -1,6 +1,8 @@
 \documentclass{beamer}
+\usepackage{xmpmulti}
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{itemize items}[ball]
+\usepackage{animate}
 \usetheme{default}
 \usecolortheme{seahorse}
 \usepackage[]{algorithm2e}
@@ -30,7 +32,6 @@
 
 \begin{frame}\frametitle{Table of contents}\tableofcontents
 \end{frame}
-
 
 \section{General overview} 
 
@@ -106,22 +107,41 @@
       \begin{block}{Basic procedure}
       \begin{itemize}
       \item collect network data on the studied phenomenon
-      \item merge the data into a single heterognous network
-      \item simplify the obtained network        
+      \item merge the data into a single heterogeneous network
+      \item simplify the obtained network, or learn directly from it
       \end{itemize}
 
       
       \end{block}
       
-      \end{column}
-      \begin{column}{0.5\textwidth}  %%<--- here
-        \includegraphics[scale=0.35]{images/figure_1}
-      \end{column}
-      
-    \end{columns}
+    \end{column}
+    \begin{column}{0.5\textwidth}  %%<--- here
+      \includegraphics[scale=0.35]{images/figure_1}
+    \end{column}
     
-   \end{frame}
+  \end{columns}
+  
+\end{frame}
+
+\begin{frame}\frametitle{Example BioMine network}
+  \transduration<1-4>{2}
+  \multiinclude[<+->][format=png, graphics={width=\textwidth}]{images/simple}    
+\end{frame}
 
 
-   
+\begin{frame}\frametitle{Up to 8 layers of interconnected information}  
+  \includegraphics[scale=0.45]{images/SNPmpx}    
+\end{frame}
+
+\begin{frame}\frametitle{Subset extraction}
+
+  \begin{block}{Extraction algorithm}
+    A multiplex network $ \Psi $ is decomposed into individual communities via the use of $Louvain$ algorithm. Initial term list $\psi $ is then splitted according to community presence, such that initial terms $ t_{1},t_{2},..,t_{n} $ are assigned to a subset $\phi \in \psi$ $iff$ $t_{x..y} \in \Psi_{x..y}$.
+  \end{block}
+  \begin{center}
+  \includegraphics[scale=0.15]{images/biomine_community}
+  \end{center}
+
+\end{frame}
+
 \end{document}
