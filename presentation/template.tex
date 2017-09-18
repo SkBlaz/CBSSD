@@ -3,7 +3,7 @@
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{itemize items}[ball]
 \usepackage{animate}
-\usetheme{default}
+\usetheme{CambridgeUS}
 \usepackage[style=ieee]{biblatex}
 \usecolortheme{seahorse}
 \usepackage[]{algorithm2e}
@@ -133,31 +133,30 @@
 
 
 \begin{frame}\frametitle{Up to 12 layers of interconnected information}  
-  \includegraphics[scale=0.45]{images/SNPmpx}    
+  \includegraphics[scale=0.42]{images/SNPmpx}    
 \end{frame}
 
 \begin{frame}\frametitle{Subset extraction}
 
   \begin{block}{Extraction algorithm}
-    A multiplex network $ \Psi $ is decomposed into individual communities via the use of $Louvain$ algorithm. Initial term list $\psi $ is then splitted according to community presence, such that initial terms $ t_{1},..,t_{n} $ are assigned to a subset $\zeta_{x,..,y} \in \psi$ $iff$ $\exists t_{x,..,y} \in \Psi_{x,..,y}$.
+    A multiplex network $ \Lambda $ is decomposed into individual communities via the use of $Louvain$ algorithm. Initial term list $\Psi_{1,..,n} $ is then splitted according to community presence, such that each subset of terms $ \Psi_{x \in \{1,..,n\}} $ is assigned to a target class $ \zeta_{x} $.
   \end{block}
   \begin{center}
- \includegraphics[scale=0.20]{images/biomine_community}
+ \includegraphics[scale=0.15]{images/biomine_community}
   \end{center}
 
 \end{frame}
 
-
 \begin{frame}\frametitle{Intermediary result}
 
-  After community detection, the initial term list $\Psi$ is splitted into n smaller subsets $\zeta_{1,..,n}$, which are interpreted as target classes for the semantic rule learning step. The objective function thus becomes:
+ Constructed $\zeta_{1,..,n}$  are interpreted as target classes for the semantic rule learning step. The objective function thus becomes:
 
   \begin{alertblock}{Learning objective}
 
-    Learn a rule set $\Delta_{1,..,n}$  for individual classes $\zeta_{1,..,n}$ using background knowledge ($\Xi$) in form of ontologies, such that the likelihood of individual class $\zeta_{x};x \in \{1,..,n\}$ is maximized.
+    Learn a rule set $\Delta$  for individual classes $\zeta_{1,..,n}$ using background knowledge ($\Xi$) in form of ontologies, such that the likelihood of individual class representation $\zeta_{x};x \in \{1,..,n\}$ is maximized.
 
     \begin{equation}
-      \Delta_{\zeta_{1},..,\zeta_{n}} = \underset{i \in R_{1},..,R_{n}}{argmax \Big[P(R_{i}|\Xi) \Big]}
+      \Delta_{\zeta_{1},..,\zeta_{n}} = \underset{i \in \{R_{1},..,R_{n}\}}{argmax \Big[P(R_{i}|\Xi) \Big]}
     \end{equation}
     
     \end{alertblock}
@@ -172,15 +171,15 @@
   \begin{block}{Background knowledge representation}
     \begin{itemize}
 
-    \item Individual term sets projected into $\Delta(BK)$ space
+    \item Individual term sets are fist projected into $\Xi(BK)$ space
     \item Extensive knowledge from $GO,PFAM, KEGG,..$ used
-    \item Rules can be generalized according to $BK$
-    \item Semi-supervised, multi-class learning problem
+    \item Rules can be generalized
+    \item Supervised descriptive learning task
       
     \end{itemize}
   \end{block}
       \end{column}
-    \begin{column}{0.5\textwidth}  %%<--- here
+      \begin{column}{0.5\textwidth}  %%<--- here
       \begin{center}
         $R_{1} \rightarrow \bigwedge_{i}GO_{i}; i \in \{GO_{R_{1}}\}$
         $R_{2} \rightarrow \bigwedge_{i}GO_{i}; i \in \{GO_{R_{2}}\}$\\
@@ -196,17 +195,49 @@
   \begin{frame}\frametitle{Practical example - SNPs}
 
     \begin{block}{Description}
-      SNPs within protein binding sites previously identified term set $\psi$ indicates association with DNA-related processes, cancer development and membrane mechanisms. We were interested, whether there exist more detailed, yet generalized properties of the studied phenomenon.
+      SNPs within protein binding sites previously identified term set $\psi$ indicates association with DNA-related processes, cancer development and membrane mechanisms. We were interested, whether there exist general explanations for latent, community-based patterns.
     \end{block}
+
+    \begin{center}
+      \includegraphics[scale=0.35]{images/snps}
+      \end{center}
   \end{frame}
 
 
   \begin{frame}\frametitle{Practical example - SNPs (2)}
 
-    %% osnovne stevilke
-    %% kaj je cilj
-    
+    \begin{block}{General result}
 
-  \end{frame}
+      Largest communities corresponded to the most significant terms, identified in the previous study - proof of structure-based enrichment
+      
+    \end{block}
 
+        \begin{exampleblock}{Example}
+
+          Many conjuncts emerged for more marginal communities - this is the new knowledge.
+          For example: \textit{CASR} gene was in previous study not directy associated with arginine-binding process.
+      
+        \end{exampleblock}        
+       
+      \end{frame}
+
+      \begin{frame}\frametitle{Short-term development}
+
+        \begin{block}{Upgraded CD}
+
+          The InfoMap equation is already used to incorporate the information on multiplex edges.         
+        \end{block}
+
+        \begin{block}{Ontology processing speedup}
+
+          Recent work by \textit{Kralj et. al} present a method capable of significant speedups (10-10x) at no cost with regard learned knowledge representations. This approach makes CBSSD scale better
+        \end{block}
+
+        \begin{block}{Representation learning in streaming context}
+
+          Can the CBSSD learn and update its knowledge in the context of a dynamical process? 
+          
+          \end{block}
+        
+      \end{frame}
 \end{document}
