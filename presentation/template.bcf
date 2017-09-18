@@ -2026,6 +2026,5 @@
     <bcf:datasource type="file" datatype="bibtex">references.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1">Skrlj2017</bcf:citekey>
   </bcf:section>
 </bcf:controlfile>
