@@ -69,6 +69,10 @@ def prepare_network(graph):
         except:
             pass
 
+    import shutil
+    shutil.rmtree("out", ignore_errors=False, onerror=None)
+    shutil.rmtree("tmp", ignore_errors=False, onerror=None)
+
     return partitions
 
 
