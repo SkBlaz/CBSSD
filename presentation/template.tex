@@ -156,7 +156,8 @@
     Learn a rule set $\Delta$  for individual classes $\zeta_{1,..,n}$ using background knowledge ($\Xi$) in form of ontologies, such that the likelihood of individual class representation $\zeta_{x};x \in \{1,..,n\}$ is maximized.
 
     \begin{equation}
-      \Delta_{\zeta_{1},..,\zeta_{n}} = \underset{i \in \{R_{1},..,R_{n}\}}{argmax \Big[P(R_{i}|\Xi) \Big]}
+      \Delta_{\zeta_{1},..,\zeta_{n}} = \underset{i \in \zeta_{1},..,\zeta_{n}\}}{argmax \Big[P(
+        \Delta_{\zeta_{i}|\Xi)} \Big]}
     \end{equation}
     
     \end{alertblock}
@@ -231,7 +232,7 @@
 
         \begin{block}{Ontology processing speedup}
 
-          Recent work by \textit{Kralj et. al} present a method capable of significant speedups (10-10x) at no cost with regard learned knowledge representations. This approach makes CBSSD scale better
+          Recent work by \textit{Kralj et. al.} present a method capable of significant speedups (10-10x) at no cost with regard learned knowledge representations. This approach makes CBSSD scale better
         \end{block}
 
         \begin{block}{Representation learning in streaming context}
