@@ -9,16 +9,34 @@ from collections import defaultdict
 import itertools
 import community
 
-def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,map_folder):
+def prepare_network(graph):
+
+    outstruct = []
+    ## for edge, do: n1 l1 n2 l2 w
+    pass
+
+def run_infomap(structure):
+
+    ## return the partitions    
+    pass
+
+def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,map_folder,method="louvain"):
 
     G = nx.read_gpickle(input_graph)
+
+    ## split into distinct layers before doing community detection        
+    
     Gx = nx.Graph()
     nodes = G.nodes(data=False)
     edges = G.edges(data=False)
     Gx.add_nodes_from(nodes)
     Gx.add_edges_from(edges)
-    
-    predictions = community.best_partition(Gx)
+
+    if method == "louvain":    
+        predictions = community.best_partition(Gx)
+
+    if method == "infomap_multiplex":
+        predictions = run_infomap(prepare_network(Gx))        
     
     uniGO = defaultdict(list)    
     with open(mapping_file) as im:
