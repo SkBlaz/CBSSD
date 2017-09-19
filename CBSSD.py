@@ -1,9 +1,16 @@
 ## this will be the python interface for command line execution..
 
 ###### example
-#python3 CBSSD.py --step_size 10 --knowledge_graph example_outputs/epigenetics.gpickle --term_list example_inputs/epigenetics.list --ontology_BK example_inputs --output_BK example_outputs/epiBK.n3 --n3_samples example_outputs/epiSam.n3 --gaf_mapping example_inputs/goa_human.gaf --community_map example_outputs/EpiCom.txt --rule_output example_outputs/Epirules.txt 
+#python3 CBSSD.py --step_size 10 --knowledge_graph example_outputs/epigenetics.gpickle --term_list example_inputs/epigenetics.list --ontology_BK example_inputs --output_BK example_outputs/epiBK.n3 --n3_samples example_outputs/epiSam.n3 --gaf_mapping example_inputs/goa_human.gaf --community_map example_outputs/EpiCom.txt --rule_output example_outputs/Epirules.txt
 
 ######
+
+
+################
+
+#python3 CBSSD.py --step_size 10 --knowledge_graph example_outputs/diabetes.gpickle --term_list example_inputs/uniprot-diabetes.list --ontology_BK example_inputs --output_BK example_outputs/diabBK.n3 --n3_samples example_outputs/diabSam.n3 --gaf_mapping example_inputs/goa_human.gaf --community_map example_outputs/diabcom.txt --rule_output example_outputs/diabrules.txt
+
+#######
 
 ## internal imports
 from lib.get_bk import *
@@ -32,7 +39,7 @@ if __name__ == '__main__':
     parsed = parser_init.parse_args()
     source = read_example_datalist(parsed.term_list,whole=True)
 
-    hedwig_command = "python2 hedwig/hedwig BK/ "+parsed.n3_samples+" -o "+parsed.rule_output+" -l --adjust=none --beam=50"
+    hedwig_command = "python2 hedwig/hedwig BK/ "+parsed.n3_samples+" -o "+parsed.rule_output+" -l --adjust=none --beam=10"
 
 
     ## either download ontology or use own
@@ -55,7 +62,7 @@ if __name__ == '__main__':
 
     ## identify subgroups
     print ("STEP 3: subgroup identification")
-    community_cluster_n3(parsed.knowledge_graph,parsed.term_list,parsed.gaf_mapping,parsed.n3_samples,parsed.community_map,method="infomap_multiplex")
+    community_cluster_n3(parsed.knowledge_graph,parsed.term_list,parsed.gaf_mapping,parsed.n3_samples,parsed.community_map)
 
     ## learn details about subgroups
     print ("STEP 4: Learning")

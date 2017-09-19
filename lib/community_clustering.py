@@ -12,7 +12,7 @@ import community
 def run_infomap(infile):
 
     from subprocess import call
-    call(["../infomap/Infomap", infile,"out/","-i multiplex","-n 10","--silent"])
+    call(["infomap/Infomap", "tmp/multiplex_edges.net","out/","-i multiplex","-N 1000","--silent"])
 
 def parse_infomap(outfile):
 
@@ -29,7 +29,7 @@ def parse_infomap(outfile):
 
     return outmap
 
-def prepare_network(graph):
+def multiplex_community(graph):
 
     outstruct = []
     layermap = {x.split("_")[0] : y for y, x in enumerate(set(x.split("_")[0] for x in graph.nodes()))}
@@ -60,6 +60,7 @@ def prepare_network(graph):
     file.close() 
 
     ## run infomap
+    print("INFO: Multiplex community detection in progress..")
     run_infomap("tmp/multiplex_edges.net")
     partition = parse_infomap("out/multiplex_edges.tree")
     partitions = {}
@@ -70,6 +71,7 @@ def prepare_network(graph):
             pass
 
     import shutil
+    
     shutil.rmtree("out", ignore_errors=False, onerror=None)
     shutil.rmtree("tmp", ignore_errors=False, onerror=None)
 
@@ -92,7 +94,7 @@ def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,ma
         predictions = community.best_partition(Gx)
 
     if method == "infomap_multiplex":
-        predictions = run_infomap(prepare_network(Gx))        
+        predictions = multiplex_community(Gx)
     
     uniGO = defaultdict(list)    
     with open(mapping_file) as im:
