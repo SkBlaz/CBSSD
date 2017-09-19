@@ -9,16 +9,68 @@ from collections import defaultdict
 import itertools
 import community
 
+def run_infomap(infile):
+
+    from subprocess import call
+    call(["../infomap/Infomap", infile,"out/","-i multiplex","-n 10","--silent"])
+
+def parse_infomap(outfile):
+
+    outmap = {}
+    with open(outfile) as of:
+        for line in of:
+            parts = line.strip().split()
+            try:
+                module = parts[0].split(":")[0]
+                node = parts[3]
+                outmap[int(node)] = int(module)
+            except:
+                pass
+
+    return outmap
+
 def prepare_network(graph):
 
     outstruct = []
-    ## for edge, do: n1 l1 n2 l2 w
-    pass
+    layermap = {x.split("_")[0] : y for y, x in enumerate(set(x.split("_")[0] for x in graph.nodes()))}
 
-def run_infomap(structure):
+    nodemap = {x : y for y,x in enumerate(graph.nodes())}
+    inverse_nodemap = {k : f for f,k in nodemap.items()}
+    for edge in graph.edges():
+        
+        layer_first = layermap[edge[0].split("_")[0]]
+        layer_second = layermap[edge[1].split("_")[0]]
+        node_first = nodemap[edge[0]]
+        node_second = nodemap[edge[1]]
+        outstruct.append((layer_first,node_first,layer_second,node_second,1))
 
-    ## return the partitions    
-    pass
+    import os
+    
+    if not os.path.exists("tmp"):
+        os.makedirs("tmp")
+
+    if not os.path.exists("out"):
+        os.makedirs("out")
+        
+    file = open("tmp/multiplex_edges.net","w")
+    
+    for el in outstruct:
+        file.write(" ".join([str(x) for x in el])+"\n")        
+ 
+    file.close() 
+
+    ## run infomap
+    run_infomap("tmp/multiplex_edges.net")
+    partition = parse_infomap("out/multiplex_edges.tree")
+    partitions = {}
+    for k,v in partition.items():
+        try:
+            partitions[inverse_nodemap[k]] = v
+        except:
+            pass
+
+    return partitions
+
 
 def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,map_folder,method="louvain"):
 
@@ -104,7 +156,7 @@ def community_cluster(G, termlist):
     communities = community.best_partition(Gx)
     
     # communities = nx.k_clique_communities(G, ncom)
-    # communities = itertools.islice(communities,4)
+    # communities = itertools.islice(communities,4)3
     
     return communities
 
@@ -118,6 +170,9 @@ if __name__ == '__main__':
     
     parsed = parser_init.parse_args()
 
-    community_cluster_n3(parsed.input_graph,parsed.input_nodelist,parsed.input_mapping,parsed.input_ontology_id)
+    #community_cluster_n3(parsed.input_graph,parsed.input_nodelist,parsed.input_mapping,parsed.input_ontology_id)
+    G = nx.read_gpickle(parsed.input_graph)
+    prepare_network(G)
+
     
     
