@@ -142,11 +142,12 @@ def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,ma
         u = rdflib.term.URIRef('%sexample%s' % (amp_uri, com))
         g.add((u, rdflib.RDF.type, KT.Example))
         g.add((u, KT.class_label, rdflib.Literal(str(com)+"_community")))
-        for goterm in uniGO[node]:  
-            annotation_uri = rdflib.term.URIRef('%s%s' % (obo_uri, rdflib.Literal(goterm)))
-            blank = rdflib.BNode()
-            g.add((u, KT.annotated_with, blank))
-            g.add((blank, KT.annotation, annotation_uri))
+        for goterm in uniGO[node]:
+            if "GO:" in goterm:
+                annotation_uri = rdflib.term.URIRef('%s%s' % (obo_uri, rdflib.Literal(goterm)))
+                blank = rdflib.BNode()
+                g.add((u, KT.annotated_with, blank))
+                g.add((blank, KT.annotation, annotation_uri))
 
     g.serialize(destination=output_n3, format='n3')    
     
@@ -178,7 +179,4 @@ if __name__ == '__main__':
 
     #community_cluster_n3(parsed.input_graph,parsed.input_nodelist,parsed.input_mapping,parsed.input_ontology_id)
     G = nx.read_gpickle(parsed.input_graph)
-    prepare_network(G)
-
-    
-    
+    multiplex_community(G)    
