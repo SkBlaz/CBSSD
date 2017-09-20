@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.1.18)  20 SEP 2017 14:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.1.18)  20 SEP 2017 18:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1472,7 +1472,7 @@ Package biblatex Info: Reference segment=0 on input line 13.
 Package hyperref Warning: Option `pdfauthor' has already been used,
 (hyperref)                setting the option has no effect on input line 16.
 
-<images/header.png, id=44, 562.70975pt x 422.05342pt>
+<images/header.png, id=52, 562.70975pt x 422.05342pt>
 File: images/header.png Graphic file (type png)
  <use images/header.png>
 Package pdftex.def Info: images/header.png used on input line 30.
@@ -1498,7 +1498,7 @@ Overfull \hbox (4.25487pt too wide) has occurred while \output is active
 
 pdfTeX warning: pdflatex (file ./images/header.png): large interlaced PNG might
  cause out of memory (use non-interlaced PNG to fix this)
->] (./template.toc) <images/background.png, id=66, 722.7pt x 542.025pt>
+>] (./template.toc) <images/background.png, id=76, 722.7pt x 542.025pt>
 File: images/background.png Graphic file (type png)
 
 <use images/background.png>
@@ -1534,7 +1534,7 @@ line 63.
 File: ot1mathkerncmss.fd 2013/03/27 Fontinst v1.933 font definitions for OT1/ma
 thkerncmss.
 )
-<images/figure_2.png, id=80, 462.528pt x 346.896pt>
+<images/figure_2.png, id=92, 462.528pt x 346.896pt>
 File: images/figure_2.png Graphic file (type png)
  <use images/figure_2.png>
 Package pdftex.def Info: images/figure_2.png used on input line 63.
@@ -1601,7 +1601,7 @@ Package epstopdf Info: Source file: <images/workflow2.eps>
 rted-to.pdf images/workflow2.eps>
 (epstopdf)             \includegraphics on input line 99.
 Package epstopdf Info: Output file is already uptodate.
- <images/workflow2-eps-converted-to.pdf, id=107, 794.97pt x 614.295pt>
+ <images/workflow2-eps-converted-to.pdf, id=119, 794.97pt x 614.295pt>
 File: images/workflow2-eps-converted-to.pdf Graphic file (type pdf)
 
 <use images/workflow2-eps-converted-to.pdf>
@@ -1629,7 +1629,7 @@ Overfull \hbox (4.25487pt too wide) has occurred while \output is active
 [6
 
  <./images/workflow2-eps-converted-to.pdf>]
-<images/figure_1.png, id=117, 462.528pt x 346.896pt>
+<images/figure_1.png, id=129, 462.528pt x 346.896pt>
 File: images/figure_1.png Graphic file (type png)
  <use images/figure_1.png>
 Package pdftex.def Info: images/figure_1.png used on input line 125.
@@ -1652,29 +1652,19 @@ Overfull \hbox (4.25487pt too wide) has occurred while \output is active
 [7
 
  <./images/figure_1.png>]
-<images/diabetes_mesh.png, id=127, 462.528pt x 346.896pt>
-File: images/diabetes_mesh.png Graphic file (type png)
+<images/collage2.png, id=139, 68.75417pt x 53.12822pt>
+File: images/collage2.png Graphic file (type png)
 
-<use images/diabetes_mesh.png>
-Package pdftex.def Info: images/diabetes_mesh.png used on input line 143.
-(pdftex.def)             Requested size: 115.63171pt x 86.72379pt.
+<use images/collage2.png>
+Package pdftex.def Info: images/collage2.png used on input line 145.
+(pdftex.def)             Requested size: 220.01253pt x 170.00964pt.
 
-Overfull \hbox (12.9421pt too wide) in paragraph at lines 143--143
-[][]  
- []
-
-<images/SNPmpx.png, id=128, 694.5147pt x 578.8827pt>
-File: images/SNPmpx.png Graphic file (type png)
- <use images/SNPmpx.png>
-Package pdftex.def Info: images/SNPmpx.png used on input line 143.
-(pdftex.def)             Requested size: 229.19055pt x 191.03188pt.
-
-Overfull \vbox (28.12454pt too high) detected at line 143
+Overfull \vbox (17.10231pt too high) detected at line 145
  []
 
 File: images/background.png Graphic file (type png)
 <use images/background.png>
-Package pdftex.def Info: images/background.png used on input line 143.
+Package pdftex.def Info: images/background.png used on input line 145.
 (pdftex.def)             Requested size: 364.1942pt x 273.15392pt.
 
 Overfull \hbox (12.33415pt too wide) has occurred while \output is active
@@ -1688,18 +1678,19 @@ Overfull \hbox (4.25487pt too wide) has occurred while \output is active
 
 [8
 
- <./images/diabetes_mesh.png> <./images/SNPmpx.png>]
+ <./images/collage2.png>]
+<images/SNPmpx.png, id=148, 694.5147pt x 578.8827pt>
 File: images/SNPmpx.png Graphic file (type png)
  <use images/SNPmpx.png>
-Package pdftex.def Info: images/SNPmpx.png used on input line 148.
+Package pdftex.def Info: images/SNPmpx.png used on input line 150.
 (pdftex.def)             Requested size: 291.69417pt x 243.12907pt.
 
-Overfull \vbox (25.12509pt too high) detected at line 148
+Overfull \vbox (25.12509pt too high) detected at line 150
  []
 
 File: images/background.png Graphic file (type png)
 <use images/background.png>
-Package pdftex.def Info: images/background.png used on input line 148.
+Package pdftex.def Info: images/background.png used on input line 150.
 (pdftex.def)             Requested size: 364.1942pt x 273.15392pt.
 
 Overfull \hbox (12.33415pt too wide) has occurred while \output is active
@@ -1713,19 +1704,20 @@ Overfull \hbox (4.25487pt too wide) has occurred while \output is active
 
 [9
 
-] <images/biomine_community.png, id=147, 1675.2186pt x 922.8879pt>
+ <./images/SNPmpx.png>]
+<images/biomine_community.png, id=158, 1675.2186pt x 922.8879pt>
 File: images/biomine_community.png Graphic file (type png)
 
 <use images/biomine_community.png>
-Package pdftex.def Info: images/biomine_community.png used on input line 159.
+Package pdftex.def Info: images/biomine_community.png used on input line 161.
 (pdftex.def)             Requested size: 251.27194pt x 138.4272pt.
 
-Overfull \vbox (12.71988pt too high) detected at line 159
+Overfull \vbox (14.81906pt too high) detected at line 161
  []
 
 File: images/background.png Graphic file (type png)
 <use images/background.png>
-Package pdftex.def Info: images/background.png used on input line 159.
+Package pdftex.def Info: images/background.png used on input line 161.
 (pdftex.def)             Requested size: 364.1942pt x 273.15392pt.
 
 Overfull \hbox (12.33415pt too wide) has occurred while \output is active
@@ -1742,7 +1734,7 @@ Overfull \hbox (4.25487pt too wide) has occurred while \output is active
  <./images/biomine_community.png>]
 File: images/background.png Graphic file (type png)
  <use images/background.png>
-Package pdftex.def Info: images/background.png used on input line 176.
+Package pdftex.def Info: images/background.png used on input line 178.
 (pdftex.def)             Requested size: 364.1942pt x 273.15392pt.
 
 Overfull \hbox (12.33415pt too wide) has occurred while \output is active
@@ -1759,7 +1751,7 @@ Overfull \hbox (4.25487pt too wide) has occurred while \output is active
 ]
 File: images/background.png Graphic file (type png)
  <use images/background.png>
-Package pdftex.def Info: images/background.png used on input line 205.
+Package pdftex.def Info: images/background.png used on input line 207.
 (pdftex.def)             Requested size: 364.1942pt x 273.15392pt.
 
 Overfull \hbox (12.33415pt too wide) has occurred while \output is active
@@ -1773,18 +1765,18 @@ Overfull \hbox (4.25487pt too wide) has occurred while \output is active
 
 [12
 
-] <images/snps.png, id=176, 361.35pt x 361.35pt>
+] <images/snps.png, id=185, 361.35pt x 361.35pt>
 File: images/snps.png Graphic file (type png)
  <use images/snps.png>
-Package pdftex.def Info: images/snps.png used on input line 217.
+Package pdftex.def Info: images/snps.png used on input line 219.
 (pdftex.def)             Requested size: 126.4744pt x 126.4744pt.
 
-Overfull \vbox (0.76707pt too high) detected at line 217
+Overfull \vbox (0.76707pt too high) detected at line 219
  []
 
 File: images/background.png Graphic file (type png)
 <use images/background.png>
-Package pdftex.def Info: images/background.png used on input line 217.
+Package pdftex.def Info: images/background.png used on input line 219.
 (pdftex.def)             Requested size: 364.1942pt x 273.15392pt.
 
 Overfull \hbox (12.33415pt too wide) has occurred while \output is active
@@ -1801,7 +1793,7 @@ Overfull \hbox (4.25487pt too wide) has occurred while \output is active
  <./images/snps.png>]
 File: images/background.png Graphic file (type png)
  <use images/background.png>
-Package pdftex.def Info: images/background.png used on input line 239.
+Package pdftex.def Info: images/background.png used on input line 241.
 (pdftex.def)             Requested size: 364.1942pt x 273.15392pt.
 
 Overfull \hbox (12.33415pt too wide) has occurred while \output is active
@@ -1818,7 +1810,7 @@ Overfull \hbox (4.25487pt too wide) has occurred while \output is active
 ]
 File: images/background.png Graphic file (type png)
  <use images/background.png>
-Package pdftex.def Info: images/background.png used on input line 259.
+Package pdftex.def Info: images/background.png used on input line 261.
 (pdftex.def)             Requested size: 364.1942pt x 273.15392pt.
 
 Overfull \hbox (12.33415pt too wide) has occurred while \output is active
@@ -1830,8 +1822,25 @@ Overfull \hbox (4.25487pt too wide) has occurred while \output is active
  [][][][]  
  []
 
-Package atenddvi Info: Last page = 15.
 [15
+
+]
+File: images/background.png Graphic file (type png)
+ <use images/background.png>
+Package pdftex.def Info: images/background.png used on input line 270.
+(pdftex.def)             Requested size: 364.1942pt x 273.15392pt.
+
+Overfull \hbox (12.33415pt too wide) has occurred while \output is active
+ [][]  
+ []
+
+
+Overfull \hbox (4.25487pt too wide) has occurred while \output is active
+ [][][][]  
+ []
+
+Package atenddvi Info: Last page = 16.
+[16
 
 ]
 \tf@nav=\write7
@@ -1843,13 +1852,13 @@ Package atenddvi Info: Last page = 15.
 \tf@snm=\write9
 \openout9 = `template.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 260.
-Package atveryend Info: Executing hook `AfterLastShipout' on input line 260.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 271.
+Package atveryend Info: Executing hook `AfterLastShipout' on input line 271.
  (./template.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 260.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 260.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 271.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 271.
 Package rerunfilecheck Info: File `template.out' has not changed.
-(rerunfilecheck)             Checksum: 6674715D5D5F282A1FEC4D40CF3C8038;329.
+(rerunfilecheck)             Checksum: 8DEAEB61C1D3340FA5BD493E8EF3B86F;453.
 
 
 LaTeX Font Warning: Size substitutions with differences
@@ -1858,13 +1867,13 @@ LaTeX Font Warning: Size substitutions with differences
 Package logreq Info: Writing requests to 'template.run.xml'.
 \openout1 = `template.run.xml'.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 260.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 271.
  ) 
 Here is how much of TeX's memory you used:
- 31633 strings out of 493029
- 609490 string characters out of 6136234
+ 31646 strings out of 493029
+ 609614 string characters out of 6136234
  1008855 words of memory out of 5000000
- 34569 multiletter control sequences out of 15000+600000
+ 34578 multiletter control sequences out of 15000+600000
  11040 words of font info for 40 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  56i,17n,62p,10412b,843s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1879,10 +1888,10 @@ e1/public/amsfonts/cm/cmssi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
 blic/amsfonts/cm/cmssi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
 msfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
 s/cm/cmsy8.pfb>
-Output written on template.pdf (15 pages, 3035687 bytes).
+Output written on template.pdf (16 pages, 3257269 bytes).
 PDF statistics:
- 251 PDF objects out of 1000 (max. 8388607)
- 192 compressed objects within 2 object streams
- 37 named destinations out of 1000 (max. 500000)
- 172 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 269 PDF objects out of 1000 (max. 8388607)
+ 209 compressed objects within 3 object streams
+ 41 named destinations out of 1000 (max. 500000)
+ 188 words of extra memory for PDF output out of 10000 (max. 10000000)
 

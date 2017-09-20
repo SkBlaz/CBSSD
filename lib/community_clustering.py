@@ -12,7 +12,8 @@ import community
 def run_infomap(infile):
 
     from subprocess import call
-    call(["infomap/Infomap", "tmp/multiplex_edges.net","out/","-i multiplex","-N 1000","--silent"])
+   # call(["infomap/Infomap", "tmp/multiplex_edges.net","out/","-i multiplex","-N 1000","--silent"])
+    call(["infomap/Infomap", "tmp/multiplex_edges.net","out/","-N 1000","--silent"])
 
 def parse_infomap(outfile):
 
@@ -42,7 +43,8 @@ def multiplex_community(graph):
         layer_second = layermap[edge[1].split("_")[0]]
         node_first = nodemap[edge[0]]
         node_second = nodemap[edge[1]]
-        outstruct.append((layer_first,node_first,layer_second,node_second,1))
+#        outstruct.append((layer_first,node_first,layer_second,node_second,1))
+        outstruct.append((node_first,node_second))
 
     import os
     
@@ -93,7 +95,7 @@ def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,ma
     if method == "louvain":    
         predictions = community.best_partition(Gx)
 
-    if method == "infomap_multiplex":
+    if method == "infomap":
         predictions = multiplex_community(Gx)
     
     uniGO = defaultdict(list)    

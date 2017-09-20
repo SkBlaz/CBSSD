@@ -131,15 +131,17 @@
 %  \transduration<1-4>{2}
 %  \multiinclude[<+->][format=png, graphics={width=\textwidth}]{images/simple}
 %  \includegraphics[scale=0.60]{images/collage}
-     \begin{columns}
-       \begin{column}{0.3\textwidth}
-         \includegraphics[scale=0.25]{images/diabetes_mesh}
-       \end{column}
-       \begin{column}{0.7\textwidth}
-         \includegraphics[scale=0.33]{images/SNPmpx}
-         \end{column}
+     % \begin{columns}
+     %   \begin{column}{0.3\textwidth}
+     \begin{center}
+       \includegraphics[scale=3.2]{images/collage2}
+       \end{center}
+     %   \end{column}
+     %   \begin{column}{0.7\textwidth}
+     %     \includegraphics[scale=0.33]{images/SNPmpx}
+     %     \end{column}
 
-       \end{columns}
+     %   \end{columns}
 \end{frame}
 
 
@@ -148,9 +150,9 @@
 \end{frame}
 
 \begin{frame}\frametitle{Subset extraction}
-
+  \subsection{Subset partition}
   \begin{block}{Extraction algorithm}
-    A multiplex network $ \Lambda $ is decomposed into individual communities via the use of $Louvain$ algorithm. Initial term list $\Psi_{1,..,n} $ is then splitted according to community presence, such that each subset of terms $ \Psi_{x \in \{1,..,n\}} $ is assigned to a target class $ \zeta_{x} $.
+    A multiplex network is decomposed into individual communities via the use of $Louvain$ or $multiplex$ $InfoMap$ algorithms. Initial term list $\Psi_{1,..,n} $ is then splitted according to community presence, such that each subset of terms $ \Psi_{x \in \{1,..,n\}} $ is assigned to a target class $ \zeta_{x} $.
   \end{block}
   \begin{center}
  \includegraphics[scale=0.15]{images/biomine_community}
@@ -168,13 +170,13 @@
 
     \begin{equation}
       \Delta_{\zeta_{1},..,\zeta_{n}} = \underset{i \in \zeta_{1},..,\zeta_{n}\}}{argmax \Big[P(
-        \Delta_{\zeta_{i}|\Xi)} \Big]}
+        \Delta_{\zeta_{i}}|\Xi) \Big]}
     \end{equation}
     
     \end{alertblock}
   
   \end{frame}
-
+  \subsection{Learning}
   \begin{frame}\frametitle{Semantic rule learning}
 
       \begin{columns}
@@ -232,7 +234,7 @@
       
         \end{exampleblock}
 
-        \begin{block}{Main contribution}
+        \begin{block}{Current performance}
           A system, capable of learning knowledge representations, \textbf{similar to the ones obtained directly by literature examination}.
         \end{block}
        
@@ -247,7 +249,7 @@
 
         \begin{block}{Ontology processing speedup}
 
-          Recent work by \textit{Kralj et. al.} present a method capable of significant speedups (10-50x) at no cost with regard learned knowledge representations. This approach makes CBSSD scale better
+          Recent work by \textit{Kralj et al.} present a method capable of significant speedups (10-50x) at no cost with regard learned knowledge representations. This approach makes CBSSD scale better
         \end{block}
 
         \begin{block}{Representation learning in streaming context}
@@ -256,5 +258,14 @@
           
           \end{block}
         
-      \end{frame}
+        \end{frame}
+
+        
+        \begin{frame}\frametitle{}
+
+          \begin{center}
+            Thank you for your attention!
+          \end{center}
+          
+        \end{frame}
 \end{document}
