@@ -102,7 +102,7 @@ def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,ma
             parts = line.split("\t")
             try:
                 uniGO[parts[1]].append(parts[4]) ## GO and ref both added
-                uniGO[parts[1]].append(parts[3]) 
+                uniGO[parts[1]].append(parts[3])
             except:
                 pass
 
@@ -152,21 +152,6 @@ def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,ma
     g.serialize(destination=output_n3, format='n3')    
     
 
-def community_cluster(G, termlist):
-
-    ## this is the louvain method..
-    Gx = nx.Graph()
-    nodes = G.nodes(data=False)
-    edges = G.edges(data=False)
-    Gx.add_nodes_from(nodes)
-    Gx.add_edges_from(edges)
-    communities = community.best_partition(Gx)
-    
-    # communities = nx.k_clique_communities(G, ncom)
-    # communities = itertools.islice(communities,4)3
-    
-    return communities
-
 if __name__ == '__main__':
 
     parser_init = argparse.ArgumentParser()
@@ -176,7 +161,5 @@ if __name__ == '__main__':
     parser_init.add_argument("--input_mapping", help="prediction_file..")
     
     parsed = parser_init.parse_args()
-
-    #community_cluster_n3(parsed.input_graph,parsed.input_nodelist,parsed.input_mapping,parsed.input_ontology_id)
     G = nx.read_gpickle(parsed.input_graph)
     multiplex_community(G)    
