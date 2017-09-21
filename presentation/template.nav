@@ -33,71 +33,75 @@
 \defcounter {refsection}{0}\relax 
 \headcommand {\beamer@framepages {5}{5}}
 \defcounter {refsection}{0}\relax 
-\headcommand {\sectionentry {3}{Proposed approach}{6}{Proposed approach}{0}}
-\defcounter {refsection}{0}\relax 
-\headcommand {\beamer@sectionpages {5}{5}}
-\defcounter {refsection}{0}\relax 
-\headcommand {\beamer@subsectionpages {5}{5}}
-\defcounter {refsection}{0}\relax 
-\headcommand {\slideentry {3}{0}{1}{6/6}{}{0}}
+\headcommand {\slideentry {2}{0}{2}{6/6}{}{0}}
 \defcounter {refsection}{0}\relax 
 \headcommand {\beamer@framepages {6}{6}}
 \defcounter {refsection}{0}\relax 
-\headcommand {\slideentry {3}{0}{2}{7/7}{}{0}}
+\headcommand {\sectionentry {3}{Proposed approach}{7}{Proposed approach}{0}}
+\defcounter {refsection}{0}\relax 
+\headcommand {\beamer@sectionpages {5}{6}}
+\defcounter {refsection}{0}\relax 
+\headcommand {\beamer@subsectionpages {5}{6}}
+\defcounter {refsection}{0}\relax 
+\headcommand {\slideentry {3}{0}{1}{7/7}{}{0}}
 \defcounter {refsection}{0}\relax 
 \headcommand {\beamer@framepages {7}{7}}
 \defcounter {refsection}{0}\relax 
-\headcommand {\beamer@subsectionentry {0}{3}{1}{8}{Network generation}}\headcommand {\beamer@subsectionpages {6}{7}}
-\defcounter {refsection}{0}\relax 
-\headcommand {\slideentry {3}{1}{1}{8/8}{Network generation}{0}}
+\headcommand {\slideentry {3}{0}{2}{8/8}{}{0}}
 \defcounter {refsection}{0}\relax 
 \headcommand {\beamer@framepages {8}{8}}
 \defcounter {refsection}{0}\relax 
-\headcommand {\slideentry {3}{1}{2}{9/9}{Network generation}{0}}
+\headcommand {\beamer@subsectionentry {0}{3}{1}{9}{Network generation}}\headcommand {\beamer@subsectionpages {7}{8}}
+\defcounter {refsection}{0}\relax 
+\headcommand {\slideentry {3}{1}{1}{9/9}{Network generation}{0}}
 \defcounter {refsection}{0}\relax 
 \headcommand {\beamer@framepages {9}{9}}
 \defcounter {refsection}{0}\relax 
-\headcommand {\beamer@subsectionentry {0}{3}{2}{10}{Subset partition}}\headcommand {\beamer@subsectionpages {8}{9}}
-\defcounter {refsection}{0}\relax 
-\headcommand {\slideentry {3}{2}{0}{10/10}{Network generation}{0}}
+\headcommand {\slideentry {3}{1}{2}{10/10}{Network generation}{0}}
 \defcounter {refsection}{0}\relax 
 \headcommand {\beamer@framepages {10}{10}}
 \defcounter {refsection}{0}\relax 
-\headcommand {\slideentry {3}{2}{1}{11/11}{Network generation}{0}}
+\headcommand {\beamer@subsectionentry {0}{3}{2}{11}{Subset partition}}\headcommand {\beamer@subsectionpages {9}{10}}
+\defcounter {refsection}{0}\relax 
+\headcommand {\slideentry {3}{2}{0}{11/11}{Network generation}{0}}
 \defcounter {refsection}{0}\relax 
 \headcommand {\beamer@framepages {11}{11}}
 \defcounter {refsection}{0}\relax 
-\headcommand {\beamer@subsectionentry {0}{3}{3}{12}{Learning}}\headcommand {\beamer@subsectionpages {8}{11}}
-\defcounter {refsection}{0}\relax 
-\headcommand {\slideentry {3}{3}{1}{12/12}{Learning}{0}}
+\headcommand {\slideentry {3}{2}{1}{12/12}{Network generation}{0}}
 \defcounter {refsection}{0}\relax 
 \headcommand {\beamer@framepages {12}{12}}
 \defcounter {refsection}{0}\relax 
-\headcommand {\sectionentry {4}{Use case}{13}{Use case}{0}}
+\headcommand {\beamer@subsectionentry {0}{3}{3}{13}{Learning}}\headcommand {\beamer@subsectionpages {9}{12}}
 \defcounter {refsection}{0}\relax 
-\headcommand {\beamer@sectionpages {6}{12}}
-\defcounter {refsection}{0}\relax 
-\headcommand {\beamer@subsectionpages {12}{12}}
-\defcounter {refsection}{0}\relax 
-\headcommand {\beamer@subsectionentry {0}{4}{1}{13}{Polymorphisms}}\headcommand {\beamer@subsectionpages {13}{12}}
-\defcounter {refsection}{0}\relax 
-\headcommand {\slideentry {4}{1}{1}{13/13}{Polymorphisms}{0}}
+\headcommand {\slideentry {3}{3}{1}{13/13}{Learning}{0}}
 \defcounter {refsection}{0}\relax 
 \headcommand {\beamer@framepages {13}{13}}
 \defcounter {refsection}{0}\relax 
-\headcommand {\slideentry {4}{1}{2}{14/14}{Polymorphisms}{0}}
+\headcommand {\sectionentry {4}{Use case}{14}{Use case}{0}}
+\defcounter {refsection}{0}\relax 
+\headcommand {\beamer@sectionpages {7}{13}}
+\defcounter {refsection}{0}\relax 
+\headcommand {\beamer@subsectionpages {13}{13}}
+\defcounter {refsection}{0}\relax 
+\headcommand {\beamer@subsectionentry {0}{4}{1}{14}{Polymorphisms}}\headcommand {\beamer@subsectionpages {14}{13}}
+\defcounter {refsection}{0}\relax 
+\headcommand {\slideentry {4}{1}{1}{14/14}{Polymorphisms}{0}}
 \defcounter {refsection}{0}\relax 
 \headcommand {\beamer@framepages {14}{14}}
 \defcounter {refsection}{0}\relax 
-\headcommand {\slideentry {4}{1}{3}{15/15}{Polymorphisms}{0}}
+\headcommand {\slideentry {4}{1}{2}{15/15}{Polymorphisms}{0}}
 \defcounter {refsection}{0}\relax 
 \headcommand {\beamer@framepages {15}{15}}
 \defcounter {refsection}{0}\relax 
-\headcommand {\slideentry {4}{1}{4}{16/16}{Polymorphisms}{0}}
+\headcommand {\slideentry {4}{1}{3}{16/16}{Polymorphisms}{0}}
 \defcounter {refsection}{0}\relax 
 \headcommand {\beamer@framepages {16}{16}}
-\headcommand {\beamer@partpages {1}{16}}
-\headcommand {\beamer@subsectionpages {13}{16}}
-\headcommand {\beamer@sectionpages {13}{16}}
-\headcommand {\beamer@documentpages {16}}
-\headcommand {\def \inserttotalframenumber {16}}
+\defcounter {refsection}{0}\relax 
+\headcommand {\slideentry {4}{1}{4}{17/17}{Polymorphisms}{0}}
+\defcounter {refsection}{0}\relax 
+\headcommand {\beamer@framepages {17}{17}}
+\headcommand {\beamer@partpages {1}{17}}
+\headcommand {\beamer@subsectionpages {14}{17}}
+\headcommand {\beamer@sectionpages {14}{17}}
+\headcommand {\beamer@documentpages {17}}
+\headcommand {\def \inserttotalframenumber {17}}
