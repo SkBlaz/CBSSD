@@ -169,11 +169,11 @@
 
   \begin{alertblock}{Learning objective}
 
-    Learn a rule set $\Delta$  for individual classes $\zeta_{1,..,n}$ using background knowledge ($\Xi$) in form of ontologies, such that the likelihood of individual class representation $\zeta_{x};x \in \{1,..,n\}$ is maximized.
+    Learn a rule set $\Delta$  for individual classes $\zeta_{1,..,n}$ using background knowledge ($\Xi$) in form of ontologies and class instance embeddings $\gamma$, such that the likelihood of individual class representations $\zeta_{x};x \in \{1,..,n\}$ is maximized.
 
     \begin{equation}
       \Delta_{\zeta_{1},..,\zeta_{n}} = \underset{i \in \zeta_{1},..,\zeta_{n}\}}{argmax \Big[P(
-        \Delta_{\zeta_{i}}|\Xi) \Big]}
+        \Delta_{\zeta_{i}}|\Xi,\gamma) \Big]}
     \end{equation}
     
     \end{alertblock}
