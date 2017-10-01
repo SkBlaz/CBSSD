@@ -1,14 +1,20 @@
 
+from collections import defaultdict
 import seaborn as sns
 import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
 import pandas as pd
+import json
+import re
+import itertools
 
 ## compare two lists with a heatmap
+## kar hedwig output direktno
 
 def compare_lists(file1,file2):
     
     termlist1 = []
-    termlist2 = []
+    hedwig_out = defaultdict(list)
     
     print("processing:",file1,file2)
           
@@ -19,35 +25,43 @@ def compare_lists(file1,file2):
             term = line.strip().split()[0]
             termlist1.append(term)
 
-    with open(file2) as f2:
-        for line in f2:
-            term = line.strip().split()[0]
-            termlist2.append(term)
-
+    compiled = re.compile("GO:.......")
+    with open(file2) as data_file:    
+        data = json.load(data_file)
+        for k,v in data.items():
+            for rule in v:                
+                results = compiled.findall(str(rule))
+                for result in results:
+                    hedwig_out[k].append((result,len(results)))
+            
     ### for term in termlist 1, if sam as termlist 2, then 1, else 0
 
     termlist1 = set(termlist1)
-    termlist2 = set(termlist2)
-    
-    print(len(termlist1),len(termlist2))
+    cvals = []
+    for k in hedwig_out.values():
+        for x in k:
+            cvals.append(x)
 
-    for term in termlist1:
-        for term2 in termlist2:
-            if term == term2:
-                df = df.append(pd.DataFrame([[term, term2,int(1)]], columns=["SDM","Enrichment","Match"]),ignore_index=True)
-        
+    cvals = set(cvals)    
+    print(len(termlist1),len(cvals))
+
+    for k,v in hedwig_out.items():
+        for gt in termlist1:
+            k = k.split("_")[0]
+            dv = dict(v)
+            l1,l2 = zip(*v)
+            if gt in l1:
+                df = df.append(pd.DataFrame([[k, gt,int(dv[gt])]], columns=["SDM","Enrichment","Match"]),ignore_index=True)
             else:
-                df = df.append(pd.DataFrame([[term, term2,int(0)]], columns=["SDM","Enrichment","Match"]),ignore_index=True)
+                pass
+#                df = df.append(pd.DataFrame([[k, gt,int(0)]], columns=["SDM","Enrichment","Match"]),ignore_index=True)
+    
 
     ##plot the dataset
-
     result = df.pivot(index='SDM', columns='Enrichment', values='Match')
-    ax = sns.heatmap(result, annot=False, fmt="g", cbar=False,yticklabels=False,xticklabels=False,linewidths=.1,linecolor="lightgray")
-
-    #ax.set(xlabel='Conventional enrichment analysis', ylabel='Semantic rule learning',fontsize=30)
-
-    ax.set_xlabel("Conventional enrichment analysis (DAVID)",fontsize=25)
-    ax.set_ylabel("CBSSD",fontsize=25)
-
+    ax = sns.heatmap(result, cbar=False,yticklabels=True,xticklabels=True,linewidths=.01,cmap=ListedColormap(['green', 'yellow', 'red']))
+    ax.set_xlabel("DAVID enrichment result terms",fontsize=15)
+    ax.set_ylabel("CBSSD",fontsize=15)
+    plt.yticks(rotation=0)
+    plt.xticks(rotation=90)
     plt.show()
-

@@ -1,18 +1,14 @@
-## this will be the python interface for command line execution..
-
-###### example
-#python3 CBSSD.py --step_size 10 --knowledge_graph example_outputs/epigenetics.gpickle --term_list example_inputs/epigenetics.list --ontology_BK example_inputs --output_BK example_outputs/epiBK.n3 --n3_samples example_outputs/epiSam.n3 --gaf_mapping example_inputs/goa_human.gaf --community_map example_outputs/EpiCom.txt --rule_output example_outputs/Epirules.txt
-
-######
 
 
-################
+print("""\    __  ____    _____ _____ ___   
+   /  ]|    \  / ___// ___/|   \  
+  /  / |  o  )(   \_(   \_ |    \ 
+ /  /  |     | \__  |\__  ||  D  |
+/   \_ |  O  | /  \ |/  \ ||     |
+\     ||     | \    |\    ||     |
+ \____||_____|  \___| \___||_____|
+                                  """)
 
-#python3 CBSSD.py --step_size 10 --knowledge_graph example_outputs/diabetes.gpickle --term_list example_inputs/uniprot-diabetes.list --ontology_BK example_inputs --output_BK example_outputs/diabBK.n3 --n3_samples example_outputs/diabSam.n3 --gaf_mapping example_inputs/goa_human.gaf --community_map example_outputs/diabcom.txt --rule_output example_outputs/diabrules.txt
-
-#######
-
-## internal imports
 from lib.get_bk import *
 from lib.obo2n3 import *
 from lib.community_clustering import *
@@ -35,7 +31,7 @@ if __name__ == '__main__':
 
     parser_init.add_argument("--community_map", help="Identified subgroups..") # Mandatory
     parser_init.add_argument("--download_minimal", help="Download GAF and obo files..")
-    
+
     parsed = parser_init.parse_args()
     source = read_example_datalist(parsed.term_list,whole=True)
 
@@ -51,7 +47,7 @@ if __name__ == '__main__':
         request = make_request()
         result_graph = request.execute_query_inc(source,div=int(parsed.step_size),connected=False)
 
-        print ("STEP 1: Writing pickle datadump..")        
+        print ("STEP 1: Writing pickle datadump..")
         nx.write_gpickle(result_graph, parsed.knowledge_graph)
 
     ## parse custom .obo folder
@@ -69,4 +65,3 @@ if __name__ == '__main__':
     process = subprocess.Popen(hedwig_command.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
     print(output)
-
