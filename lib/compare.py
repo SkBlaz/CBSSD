@@ -1,5 +1,6 @@
 
 from collections import defaultdict
+import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
@@ -50,19 +51,22 @@ def compare_lists(file1,file2,out):
             dv = dict(v)
             l1,l2 = zip(*v)
             if gt in l1:
-                df = df.append(pd.DataFrame([[k, gt,int(dv[gt])]], columns=["SDM","Enrichment","Match"]),ignore_index=True)
+                df = df.append(pd.DataFrame([[str(k), str(gt),int(dv[gt])]], columns=["SDM","Enrichment","Match"]),ignore_index=True)
             else:
                 pass
 #                df = df.append(pd.DataFrame([[k, gt,int(0)]], columns=["SDM","Enrichment","Match"]),ignore_index=True)
     
-
     ##plot the dataset
     result = df.pivot(index='SDM', columns='Enrichment', values='Match')
-    ax = sns.heatmap(result, cbar=False,yticklabels=True,xticklabels=True,linewidths=.1,cmap=ListedColormap(['green', 'yellow', 'red']))
+    
+    result.fillna(value=np.nan, inplace=True)
+    ax = sns.heatmap(result, cbar=False,yticklabels=True,xticklabels=True,linewidths=.1,cmap=ListedColormap(['white', 'green', 'red']))
+    print("HM constructed..")
     ax.set_xlabel("DAVID enrichment result terms",fontsize=15)
     ax.set_ylabel("CBSSD (individual communities)",fontsize=15)
     plt.yticks(rotation=0)
-    plt.xticks(rotation=90)
+    plt.xticks(rotation=90,fontsize=5)
     fig = plt.gcf()
-    fig.set_size_inches(15, 12)
+    print("Drawing..")
+    fig.set_size_inches(15, 10)
     fig.savefig(out, dpi=400)
