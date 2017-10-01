@@ -11,7 +11,7 @@ import itertools
 ## compare two lists with a heatmap
 ## kar hedwig output direktno
 
-def compare_lists(file1,file2):
+def compare_lists(file1,file2,out):
     
     termlist1 = []
     hedwig_out = defaultdict(list)
@@ -59,9 +59,11 @@ def compare_lists(file1,file2):
 
     ##plot the dataset
     result = df.pivot(index='SDM', columns='Enrichment', values='Match')
-    ax = sns.heatmap(result, cbar=False,yticklabels=True,xticklabels=True,linewidths=.01,cmap=ListedColormap(['green', 'yellow', 'red']))
+    ax = sns.heatmap(result, cbar=False,yticklabels=True,xticklabels=True,linewidths=.1,cmap=ListedColormap(['green', 'yellow', 'red']))
     ax.set_xlabel("DAVID enrichment result terms",fontsize=15)
-    ax.set_ylabel("CBSSD",fontsize=15)
+    ax.set_ylabel("CBSSD (individual communities)",fontsize=15)
     plt.yticks(rotation=0)
     plt.xticks(rotation=90)
-    plt.show()
+    fig = plt.gcf()
+    fig.set_size_inches(15, 12)
+    fig.savefig(out, dpi=400)
