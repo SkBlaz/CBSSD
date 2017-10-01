@@ -41,7 +41,6 @@ if __name__ == '__main__':
 
     hedwig_command = "python2 hedwig/hedwig BK/ "+parsed.n3_samples+" -o "+parsed.rule_output+" -l --adjust=none --beam=10"
 
-
     ## either download ontology or use own
     if parsed.download_minimal:
         download_obo("./ontologies")
