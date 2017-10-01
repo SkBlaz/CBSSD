@@ -26,24 +26,23 @@ def compare_lists(file1,file2,out):
             termlist1.append(term)
 
     compiled = re.compile("GO:.......")
+    resultterms = []
     with open(file2) as data_file:    
         data = json.load(data_file)
         for k,v in data.items():
             for rule in v:                
                 results = compiled.findall(str(rule))
                 for result in results:
+                    resultterms.append(result)
                     hedwig_out[k].append((result,len(results)))
             
     ### for term in termlist 1, if sam as termlist 2, then 1, else 0
 
     termlist1 = set(termlist1)
-    cvals = []
-    for k in hedwig_out.values():
-        for x in k:
-            cvals.append(x)
-
-    cvals = set(cvals)    
+    cvals = set(resultterms)
     print(len(termlist1),len(cvals))
+    intersection = set.intersection(cvals,termlist1)
+    print("Intersection %:",len(intersection)*100/len(termlist1))
 
     for k,v in hedwig_out.items():
         for gt in termlist1:
