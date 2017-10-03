@@ -68,7 +68,7 @@ def draw_multilayer_default(network_list, display=True, nodesize=2,alphalevel=0.
         ## this is the default delay for matplotlib canvas
         if labels != False:
             try:
-                shape_subplot.text(start_location_network+0.5,start_location_network-0.5, labels[color])
+                shape_subplot.text(start_location_network+0.8,start_location_network-0.9, labels[color],fontsize=10)
             except:
                 pass
         
