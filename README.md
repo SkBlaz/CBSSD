@@ -32,6 +32,12 @@ python3 CBSSD.py --step_size 10 --knowledge_graph example_outputs/epigenetics.gp
 * community_map = nodes with assigned communities
 * rule_output = main result, rules for individual communities
 
+### Installation
+
+* Compile InfoMap (folder InfoMap, type make for example)
+* Python libraries: Networkx, Rdflib, Numpy, matplotlib (optional)
+* Install Hedwig by going into the Hedwig folder and write python2 setup.py install - follow instructions
+* This is it! Run by python3 CBSSD.py ... (example above) ...
 
 # Citation
 
