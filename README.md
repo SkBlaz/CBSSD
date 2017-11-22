@@ -41,4 +41,10 @@ python3 CBSSD.py --step_size 10 --knowledge_graph example_outputs/epigenetics.gp
 
 # Citation
 
-TBA, this work is to be published at the 2017 ECML as a short paper.
+```
+@article{vskrljcommunity,
+  title={Community-based semantic subgroup discovery},
+  author={{\v{S}}krlj, Blaz and Vavpetic, Anze and Kralj, Jan and Lavrac, Nada}
+}
+```
+
