@@ -32,7 +32,19 @@ python3 CBSSD.py --step_size 10 --knowledge_graph example_outputs/epigenetics.gp
 * community_map = nodes with assigned communities
 * rule_output = main result, rules for individual communities
 
+### Installation
+
+* Compile InfoMap (folder InfoMap, type make for example)
+* Python libraries: Networkx, Rdflib, Numpy, matplotlib (optional)
+* Install Hedwig by going into the Hedwig folder and write python2 setup.py install - follow instructions
+* This is it! Run by python3 CBSSD.py ... (example above) ...
 
 # Citation
 
-TBA, this work is to be published at the 2017 ECML as a short paper.
+```
+@article{vskrljcommunity,
+  title={Community-based semantic subgroup discovery},
+  author={{\v{S}}krlj, Blaz and Vavpetic, Anze and Kralj, Jan and Lavrac, Nada}
+}
+```
+
