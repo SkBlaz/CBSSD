@@ -28,7 +28,7 @@ if __name__ == '__main__':
     parser_init.add_argument("--n3_samples", help="Learning samples, derived from the term list..") # Mandatory
     parser_init.add_argument("--gaf_mapping", help="GAF map file, from term to GO..") # Mandatory
     parser_init.add_argument("--rule_output", help="Results..") # Mandatory
-
+    parser_init.add_argument("--community_type", help="Community detection type..",default="infomap") # Mandatory
     parser_init.add_argument("--community_map", help="Identified subgroups..") # Mandatory
     parser_init.add_argument("--download_minimal", help="Download GAF and obo files..")
 
@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
     ## identify subgroups
     print ("STEP 3: subgroup identification")
-    community_cluster_n3(parsed.knowledge_graph,parsed.term_list,parsed.gaf_mapping,parsed.n3_samples,parsed.community_map,method="infomap")
+    community_cluster_n3(parsed.knowledge_graph,parsed.term_list,parsed.gaf_mapping,parsed.n3_samples,parsed.community_map,method=parsed.community_type)
 
     ## learn details about subgroups
     print ("STEP 4: Learning")
