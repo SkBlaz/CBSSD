@@ -27,6 +27,21 @@ def load_terms(tfile):
             terms.append(line)
     return terms
 
+def get_term_coverage(goterms,found_goterms,input_terms):
+
+    cover = 0
+    processed_terms = []
+    for x in input_terms:
+        for j in found_goterms:
+            if x in goterms[j]:
+                if x not in processed_terms:
+                    cover += 1
+                processed_terms.append(x)
+
+
+    return (cover*100/len(input_terms))
+    
+
 def load_rules(rfile):
 
     compiled = re.compile("GO:.......")
@@ -45,6 +60,8 @@ def load_rules(rfile):
     return (hedwig_out, resultterms)
 
 
+
+
 if __name__ == "__main__":
 
     import argparse
@@ -52,18 +69,27 @@ if __name__ == "__main__":
     parser_init.add_argument("--input_gaf", help="Used ontology as background knowledge")
     parser_init.add_argument("--rules", help="hewdig outputs")
     parser_init.add_argument("--terms", help="enrichment outputs")
+    parser_init.add_argument("--input_accessions", help="Accession input file.")
     parser = parser_init.parse_args()
     
-    count_data = parse_gaf(parser.input_gaf)
-    count_data = {k : len(set(v)) for k,v in count_data.items()}
+    count_data_raw = parse_gaf(parser.input_gaf)
+    count_data = {k : len(set(v)) for k,v in count_data_raw.items()}
     total_count = sum(count_data.values())
-    print(total_count)
+    core_set = []
+    with open(parser.input_accessions) as ia:
+        for line in ia:
+            core_set.append(line.strip())
 
+    core_set = set(core_set)        
     termset = load_terms(parser.terms)
-    ruleset, all_termrules = load_rules(parser.rules)
-
+    ruleset, all_termrules = load_rules(parser.rules)    
     all_termrules = set(all_termrules)
     termset = set(termset)
+
+    DAVID_coverage = get_term_coverage(count_data_raw,termset,core_set)
+    HEDWIG_coverage = get_term_coverage(count_data_raw,all_termrules,core_set)
+
+    print("Rule coverage: {}, enrichment coverage {}".format(HEDWIG_coverage,DAVID_coverage))
     ## GO coverage
     print("Number rules: {}, Number terms: {}".format(len(all_termrules),len(termset)))
 
@@ -90,6 +116,8 @@ if __name__ == "__main__":
     intT = tcount2/len(termset)
     itr = np.mean(itr)/len(all_termrules)
     itr2 = np.mean(itr2)/len(termset)
+
+    
     
     ## term coverage
     print("Mean coverage rules: {}, Mean coverage terms: {}".format(intR,intT))
