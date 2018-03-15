@@ -7,7 +7,7 @@
 
 > CBSSD uses term lists to query extensive databases of relevant knowledge, in order to construct knowledge graphs.
 > In such graphs, distinct communities can emerge, which can be of potential interest to the user. To obtain additional information
-> on obtained communities, semantic rule learning using extensive background knowledge can be used to derive sets of community-sp> ecific rules, which can yield some new insights about the studied phenomenon.
+> on obtained communities, semantic rule learning using extensive background knowledge can be used to derive sets of community-specific rules, which can yield some new insights about the studied phenomenon.
 
 
 ## Example use on a simple list of epigenetics-related proteins (this was used as a validation dataset). Mind that .obo files can be put in a separate folder, should more than one ontology be used as background knowledge.
