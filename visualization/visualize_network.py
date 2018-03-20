@@ -30,7 +30,10 @@ def view_by_type(inputgraph,limit=False):
         #if tmp_graph.number_of_edges() > 2:
         labs.append(k)
         tmp_pos=nx.spring_layout(tmp_graph)
-        nx.set_node_attributes(tmp_graph,'pos',tmp_pos)
+        for node in tmp_graph.nodes(data=True):
+            coordinates = tmp_pos[node[0]]
+            node[1]['pos'] = coordinates
+#        nx.set_node_attributes(tmp_graph,'pos',tmp_pos)
         networks.append(tmp_graph)
 
     print ("Visualizing..")
@@ -59,7 +62,7 @@ def view_basic(inputgraph):
     ncold = [n[0].split("_")[0] for n in input_graph.nodes(data=True)]
     d = {ni: indi for indi, ni in enumerate(set(ncold))}
     cols = [d[ni] for ni in ncold]
-    nsizes = list(nx.degree(input_graph).values())
+    nsizes = list(dict(nx.degree(input_graph)).values())
     nx.draw_spring(input_graph,node_color=cols,node_size=nsizes)
     plt.show()
     

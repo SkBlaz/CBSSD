@@ -55,13 +55,13 @@ def draw_multilayer_default(network_list, display=True, nodesize=2,alphalevel=0.
     
     for network in network_list:
 
-        degrees = nx.degree(network)
+        degrees =dict( nx.degree(network))
         positions = nx.get_node_attributes(network, 'pos')
         
         for position in positions:
             try:
-                positions[position][0] = positions[position][0]+start_location_network
-                positions[position][1] = positions[position][1]+start_location_network
+                positions[position][0] = positions[position][0]+start_location_network+0.5
+                positions[position][1] = positions[position][1]+start_location_network+0.5
             except:                
                 pass
                 
@@ -80,13 +80,13 @@ def draw_multilayer_default(network_list, display=True, nodesize=2,alphalevel=0.
 
         elif background_shape == "circle":
             ## tukaj pride krogeci
-            shape_subplot.add_patch(Circle((start_location_background+0.5, start_location_background+0.5), 0.7, color=facecolor_list_background[color],alpha=alphalevel))
+            shape_subplot.add_patch(Circle((start_location_background+0.5, start_location_background+0.5), 1.02, color=facecolor_list_background[color],alpha=alphalevel))
             pass
         else:
             pass
         
-        start_location_network += 1
-        start_location_background += 1
+        start_location_network += 1.5
+        start_location_background += 1.5
         # if(len(network) > 1000):
         #     node_sizes = [v * nodesize for v in degrees.values()]
         # else:
