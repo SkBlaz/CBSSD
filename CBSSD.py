@@ -1,5 +1,4 @@
 
-
 print("""\    __  ____    _____ _____ ___   
    /  ]|    \  / ___// ___/|   \  
   /  / |  o  )(   \_(   \_ |    \ 
@@ -31,6 +30,8 @@ if __name__ == '__main__':
     parser_init.add_argument("--community_type", help="Community detection type..",default="infomap") # Mandatory
     parser_init.add_argument("--community_map", help="Identified subgroups..") # Mandatory
     parser_init.add_argument("--download_minimal", help="Download GAF and obo files..")
+    parser_init.add_argument("--multiplex", help="Use multiplex structure, where _a_b_c_d are nodes in layers a and c..",default="no")
+    parser_init.add_argument("--community_size_threshold", help="Community size threshold -- up from which size we consider communities",default=0,type=int)
 
     parsed = parser_init.parse_args()
     source = read_example_datalist(parsed.term_list,whole=True)
@@ -57,7 +58,7 @@ if __name__ == '__main__':
 
     ## identify subgroups
     print ("STEP 3: subgroup identification")
-    community_cluster_n3(parsed.knowledge_graph,parsed.term_list,parsed.gaf_mapping,parsed.n3_samples,parsed.community_map,method=parsed.community_type)
+    community_cluster_n3(parsed.knowledge_graph,parsed.term_list,parsed.gaf_mapping,parsed.n3_samples,parsed.community_map,method=parsed.community_type,multiplex = parsed.multiplex,community_size_threshold=args.community_size_threshold)
 
     ## learn details about subgroups
     print ("STEP 4: Learning")

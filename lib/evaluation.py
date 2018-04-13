@@ -117,8 +117,7 @@ if __name__ == "__main__":
     itr = np.mean(itr)/len(all_termrules)
     itr2 = np.mean(itr2)/len(termset)
 
-    
-    
+        
     ## term coverage
     print("Mean coverage rules: {}, Mean coverage terms: {}".format(intR,intT))
     print("Interestingness: {}, Interestingness: {}".format(itr,itr2))

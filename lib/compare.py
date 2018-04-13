@@ -10,8 +10,6 @@ import re
 import itertools
 
 ## compare two lists with a heatmap
-## kar hedwig output direktno
-
 def compare_lists(file1,file2,out):
     
     termlist1 = []
@@ -69,4 +67,4 @@ def compare_lists(file1,file2,out):
     fig = plt.gcf()
     print("Drawing..")
     fig.set_size_inches(12, 8)
-    fig.savefig(out, dpi=800)
+    fig.savefig(out, dpi=300)

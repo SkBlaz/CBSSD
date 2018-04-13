@@ -1,7 +1,6 @@
 ### this algorithm is capable of community clustering
+### import community
 
-
-#import community
 import networkx as nx
 import argparse
 import rdflib
@@ -9,11 +8,13 @@ from collections import defaultdict
 import itertools
 import community
 
-def run_infomap(infile):
+def run_infomap(infile,multiplex=False):
 
     from subprocess import call
-   # call(["infomap/Infomap", "tmp/multiplex_edges.net","out/","-i multiplex","-N 1000","--silent"])
-    call(["infomap/Infomap", "tmp/multiplex_edges.net","out/","-N 1000","--silent"])
+    if multiplex:
+        call(["infomap/Infomap", "tmp/multiplex_edges.net","out/","-i multiplex","-N 100","--silent"])       
+    else:
+        call(["infomap/Infomap", "tmp/monoplex_edges.net","out/","-N 100","--silent"])
 
 def parse_infomap(outfile):
 
@@ -31,7 +32,7 @@ def parse_infomap(outfile):
     return outmap
 
 def multiplex_community(graph):
-
+    print("INFO: Multiplex community detection in progress..")
     outstruct = []
     layermap = {x.split("_")[0] : y for y, x in enumerate(set(x.split("_")[0] for x in graph.nodes()))}
 
@@ -59,11 +60,11 @@ def multiplex_community(graph):
     for el in outstruct:
         file.write(" ".join([str(x) for x in el])+"\n")        
  
-    file.close() 
+    file.close()
 
     ## run infomap
     print("INFO: Multiplex community detection in progress..")
-    run_infomap("tmp/multiplex_edges.net")
+    run_infomap("tmp/multiplex_edges.net",multiplex=True)
     partition = parse_infomap("out/multiplex_edges.tree")
     partitions = {}
     for k,v in partition.items():
@@ -79,8 +80,50 @@ def multiplex_community(graph):
 
     return partitions
 
+def monoplex_community(graph):
+    print("INFO: Monoplex community detection in progress..")
+    outstruct = []
+    layermap = {x.split("_")[0] : y for y, x in enumerate(set(x.split("_")[0] for x in graph.nodes()))}
 
-def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,map_folder,method="louvain"):
+    nodemap = {x : y for y,x in enumerate(graph.nodes())}
+    inverse_nodemap = {k : f for f,k in nodemap.items()}
+    for edge in graph.edges():        
+        node_first = nodemap[edge[0]]
+        node_second = nodemap[edge[1]]
+        outstruct.append((node_first,node_second))
+
+    import os
+    
+    if not os.path.exists("tmp"):
+        os.makedirs("tmp")
+
+    if not os.path.exists("out"):
+        os.makedirs("out")
+        
+    file = open("tmp/monoplex_edges.net","w")
+    
+    for el in outstruct:
+        file.write(" ".join([str(x) for x in el])+"\n")
+ 
+    file.close()
+
+    ## run infomap
+    run_infomap("tmp/monoplex_edges.net",multiplex=False)
+    partition = parse_infomap("out/monoplex_edges.tree")
+    partitions = {}
+    for k,v in partition.items():
+        try:
+            partitions[inverse_nodemap[k]] = v
+        except:
+            pass
+
+    import shutil
+    
+    shutil.rmtree("out", ignore_errors=False, onerror=None)
+    shutil.rmtree("tmp", ignore_errors=False, onerror=None)
+    return partitions
+
+def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,map_folder,method="louvain",multiplex = "no",community_size_threshold=0):
 
     G = nx.read_gpickle(input_graph)
 
@@ -96,7 +139,11 @@ def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,ma
         predictions = community.best_partition(Gx)
 
     if method == "infomap":
-        predictions = multiplex_community(Gx)
+        if multiplex == "yes":
+            predictions = multiplex_community(Gx)
+            
+        else:
+            predictions = monoplex_community(Gx)
     
     uniGO = defaultdict(list)    
     with open(mapping_file) as im:
@@ -116,17 +163,22 @@ def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,ma
             parts = line.strip().split()
             termlist.append(parts[0])
 
+    ## extract nodes, which are parts of communities -- works for UniProts currently.
     community_map = []
     for k,v in predictions.items():
-        term = k.split(":")[1]
-        for te in termlist:
-            if te == term:
+        try:
+            term = k.split(":")[1]        
+            if term in termlist:
                 outterm = term+" "+str(v)
                 community_map.append(outterm)
+        except:
+            pass ## invalid term assignment
+
+    ## write to file
     with open(map_folder, 'w') as f:
         f.write("\n".join(community_map))
 
-
+    ## generate input examples based on community assignment
     g = rdflib.graph.Graph()
     KT = rdflib.Namespace('http://kt.ijs.si/hedwig#')
     amp_uri = 'http://kt.ijs.si/ontology/hedwig#'
@@ -134,28 +186,32 @@ def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,ma
     AMP = rdflib.Namespace(amp_uri)
 
     ## FOR PAIR, add to class community, node.split(), mapped term to class..
-
     ntuple = [(k,v) for k,v in predictions.items()]
     id_identifier = 0
-    
+
+    ## iterate through community assignments..
     for node, com in ntuple:
-        node = node.split(":")[1]
-        id_identifier += 1        
-        u = rdflib.term.URIRef('%sexample%s' % (amp_uri, com))
-        g.add((u, rdflib.RDF.type, KT.Example))
-        g.add((u, KT.class_label, rdflib.Literal(str(com)+"_community")))
-        for goterm in uniGO[node]:
-            if "GO:" in goterm:
-                annotation_uri = rdflib.term.URIRef('%s%s' % (obo_uri, rdflib.Literal(goterm)))
-                blank = rdflib.BNode()
-                g.add((u, KT.annotated_with, blank))
-                g.add((blank, KT.annotation, annotation_uri))
-
-    g.serialize(destination=output_n3, format='n3')    
+        try:
+            node = node.split(":")[1]
+            id_identifier += 1        
+            u = rdflib.term.URIRef('%sexample%s' % (amp_uri, com))
+            g.add((u, rdflib.RDF.type, KT.Example))
+            g.add((u, KT.class_label, rdflib.Literal(str(com)+"_community")))
+            for goterm in uniGO[node]:
+                if "GO:" in goterm:
+                    annotation_uri = rdflib.term.URIRef('%s%s' % (obo_uri, rdflib.Literal(goterm)))
+                    blank = rdflib.BNode()
+                    g.add((u, KT.annotated_with, blank))
+                    g.add((blank, KT.annotation, annotation_uri))
+        except:
+            pass
+        
+    ## serialize to n3
+    g.serialize(destination=output_n3, format='n3')
     
-
 if __name__ == '__main__':
 
+    ## example run
     parser_init = argparse.ArgumentParser()
     parser_init.add_argument("--input_graph", help="Graph in gpickle format.")
     parser_init.add_argument("--input_nodelist", help="Nodelist input..")
