@@ -1,7 +1,13 @@
 from py3plex.visualization.multilayer import *
 from py3plex.visualization.colors import all_color_names
 from py3plex.core import multinet
+import argparse
 
-multilayer_network = multinet.multi_layer_network().load_network("../experimental_networks/intact05.gpickle",directed=False,label_delimiter="---",input_type="gpickle")
-hairball_plot(multilayer_network.core_network,"b",layered=False)
+
+parser_init = argparse.ArgumentParser()
+parser_init.add_argument("--input_graph", help="Load graph file")
+parser = parser_init.parse_args()
+
+multilayer_network = multinet.multi_layer_network().load_network(parser.input_graph,directed=False,label_delimiter="---",input_type="gpickle")
+hairball_plot(multilayer_network.core_network,"b",layered=False,legend=False)
 plt.show()
