@@ -8,13 +8,17 @@ from collections import defaultdict
 import itertools
 import community
 
-def run_infomap(infile,multiplex=False):
+def run_infomap(infile,multiplex=False,overlapping="no"):
 
     from subprocess import call
     if multiplex:
         call(["infomap/Infomap", "tmp/multiplex_edges.net","out/","-i multiplex","-N 100","--silent"])       
     else:
-        call(["infomap/Infomap", "tmp/monoplex_edges.net","out/","-N 100","--silent"])
+        if overlapping == "yes":
+            call(["infomap/Infomap", "tmp/monoplex_edges.net","out/","-N 100","--silent","--overlapping"])
+            
+        else:
+            call(["infomap/Infomap", "tmp/monoplex_edges.net","out/","-N 100","--silent"])
 
 def parse_infomap(outfile):
 
@@ -80,7 +84,7 @@ def multiplex_community(graph):
 
     return partitions
 
-def monoplex_community(graph):
+def monoplex_community(graph,overlapping="no"):
     print("INFO: Monoplex community detection in progress..")
     outstruct = []
     layermap = {x.split("_")[0] : y for y, x in enumerate(set(x.split("_")[0] for x in graph.nodes()))}
@@ -108,7 +112,7 @@ def monoplex_community(graph):
     file.close()
 
     ## run infomap
-    run_infomap("tmp/monoplex_edges.net",multiplex=False)
+    run_infomap("tmp/monoplex_edges.net",multiplex=False,overlapping=overlapping)
     partition = parse_infomap("out/monoplex_edges.tree")
     partitions = {}
     for k,v in partition.items():
@@ -123,7 +127,7 @@ def monoplex_community(graph):
     shutil.rmtree("tmp", ignore_errors=False, onerror=None)
     return partitions
 
-def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,map_folder,method="louvain",multiplex = "no",community_size_threshold=0):
+def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,map_folder,method="louvain",multiplex = "no",community_size_threshold=0,overlapping="no"):
 
     G = nx.read_gpickle(input_graph)
 
@@ -143,7 +147,7 @@ def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,ma
             predictions = multiplex_community(Gx)
             
         else:
-            predictions = monoplex_community(Gx)
+            predictions = monoplex_community(Gx, overlapping=overlapping)
     
     uniGO = defaultdict(list)    
     with open(mapping_file) as im:

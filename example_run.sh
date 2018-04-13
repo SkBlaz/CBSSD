@@ -18,3 +18,4 @@ python3 heatmap.py --enrichment example_inputs/diabDAVIDterms.list --cbssd examp
 python3 heatmap.py --enrichment example_inputs/snpsDAVID.list --cbssd example_outputs/Snpsrules.json --out example_outputs/hm_snps.png
 
 ## compute also statistics for each of the examples.
+## compute tables for individual datasets
