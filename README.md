@@ -42,9 +42,25 @@ python3 CBSSD.py --step_size 10 --knowledge_graph example_outputs/epigenetics.gp
 # Citation
 
 ```
-@article{vskrljcommunity,
-  title={Community-based semantic subgroup discovery},
-  author={{\v{S}}krlj, Blaz and Vavpetic, Anze and Kralj, Jan and Lavrac, Nada}
+@InProceedings{10.1007/978-3-319-78680-3_13,
+author="{\v{S}}krlj, Bla{\v{z}}
+and Kralj, Jan
+and Vavpeti{\v{c}}, An{\v{z}}e
+and Lavra{\v{c}}, Nada",
+editor="Appice, Annalisa
+and Loglisci, Corrado
+and Manco, Giuseppe
+and Masciari, Elio
+and Ras, Zbigniew W.",
+title="Community-Based Semantic Subgroup Discovery",
+booktitle="New Frontiers in Mining Complex Patterns",
+year="2018",
+publisher="Springer International Publishing",
+address="Cham",
+pages="182--196",
+abstract="Modern data mining algorithms frequently need to address learning from heterogeneous data and knowledge sources, including ontologies. A data mining task in which ontologies are used as background knowledge is referred to as semantic data mining. A special form of semantic data mining is semantic subgroup discovery, where ontology terms are used in subgroup describing rules. We propose to enhance ontology-based subgroup identification by Community-Based Semantic Subgroup Discovery (CBSSD), taking into account also the structural properties of complex networks related to the studied phenomenon. The application of the developed CBSSD approach is demonstrated on two use cases from the field of molecular biology.",
+isbn="978-3-319-78680-3"
 }
+
 ```
 
