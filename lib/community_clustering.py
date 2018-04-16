@@ -135,6 +135,9 @@ def return_community_mapping(predictions,termlist):
             if term in termlist:
                 outterm = term+" "+str(v)
                 community_map.append(outterm)
+        except:
+            pass ## mapping non-existent
+                
     return community_map
 
 def read_termlist(terms):
