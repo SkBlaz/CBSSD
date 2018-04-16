@@ -152,7 +152,7 @@ def read_termlist(terms):
 
 def parse_gaf_file(gaf_mappings):
     uniGO = defaultdict(list)    
-    with open(mapping_file) as im:
+    with open(gaf_mappings) as im:
         for line in im:
             parts = line.split("\t")
             try:
@@ -183,13 +183,13 @@ def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,ma
         else:
             predictions = monoplex_community(Gx, overlapping=overlapping)
     
-    uniGO = parse_gaf_file(uniGO)
+    uniGO = parse_gaf_file(mapping_file)
 
     print ("INFO: number of terms parsed:",len(uniGO.keys()))
     termlist = read_termlist(termlist_infile)
 
     ## extract nodes, which are parts of communities -- works for UniProts currently.
-    community_map = return_community_mapping(predictions)
+    community_map = return_community_mapping(predictions,termlist)
     ## write to file
     with open(map_folder, 'w') as f:
         f.write("\n".join(community_map))
