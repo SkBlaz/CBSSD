@@ -3,6 +3,9 @@
 ## this is to calculate enrichment scores
 
 from scipy.stats import fisher_exact
+import multiprocessing as mp
+import random
+from statsmodels.sandbox.stats.multicomp import multipletests
 from collections import defaultdict
 
 def read_SCOP_terms(filename):
@@ -131,94 +134,135 @@ def multiple_test_correction(input_dataset):
             if (significant == True):
                 print (key,term,significant,tmp,pval)
 
- #   print(pvals)
+def read_GO_gaf(gaf_file):
+
+    #return a dictionary, where for each go term: how many genes annotated, all genes
+    # a = genes from list annotated with that term
+    # b = 1-a
+    # c = mapping[term]
+    # d = all_genes - c
+    pass
+
+def read_term_list(term_list):
+    ## term
+    pass
+
+def read_topology_mappings(mapping):
+
+    ## read the mapping in for of n:term
+    components = defaultdict(list)
+    with open(mapping) as cf:
+        for line in cf:
+            node, module = line.strip().split()
+            components[module].append(node)            
+    return components
+
+def compute_enrichment(termlist_mapping, term_base):
+    #columns2 = ['observation','term','pval','corrected_pval','significant']
+
+    ## for each mapping, compute enrichment
     
+    def parallel_enrichment(term):
+        term = termBase[term]
+        pval = calculate_pval(component,term_dataset,term)
+        return {'observation' : enum,'term' : term,'pval' : pval}
+
+    pool = mp.Pool(mp.cpu_count())
+    inputs = [x for x in range(0,len(termBase))]
+    results = pool.map(parallel_enrichment,inputs)
+
+    pool.close()
+    pool.join() ## this merges processes
+
+    ## correct for multiple tests
+    ## return
+    
+    pass
+
+
 if __name__ == "__main__":
     print("Starting enrichment analysis..")
 
     ## perform enrichment analysis
-    import multiprocessing as mp
-    import random
-    from statsmodels.sandbox.stats.multicomp import multipletests
 
-    random.seed(123)
-    if args.termbase:
+    # random.seed(123)
+    # if args.termbase:
 
-        if args.termbase == "GO":
-            term_dataset, termBase = read_pdb_GO(args.termfile)
-        elif args.termbase == "PFAM":
-            term_dataset, termBase = read_pfam_terms(args.termfile)
-        elif args.termbase == "SCOP":
-            term_dataset, termBase = read_SCOP_terms(args.termfile)
-        else:
-            exit
+    #     if args.termbase == "GO":
+    #         term_dataset, termBase = read_pdb_GO(args.termfile)
+    #     elif args.termbase == "PFAM":
+    #         term_dataset, termBase = read_pfam_terms(args.termfile)
+    #     elif args.termbase == "SCOP":
+    #         term_dataset, termBase = read_SCOP_terms(args.termfile)
+    #     else:
+    #         exit
 
-        rep_chains = ["".join(x.split("_")[1:3]) for x in G.nodes()]
+    #     rep_chains = ["".join(x.split("_")[1:3]) for x in G.nodes()]
 
-        ## remove items not present in the network
+    #     ## remove items not present in the network
 
-        to_del = []
-        for k in term_dataset.keys():
-            if k not in rep_chains:
-                to_del.append(k)
+    #     to_del = []
+    #     for k in term_dataset.keys():
+    #         if k not in rep_chains:
+    #             to_del.append(k)
 
-        print("Removing",len(to_del),"terms.")
+    #     print("Removing",len(to_del),"terms.")
 
-        for x in to_del:
-            del term_dataset[x]
+    #     for x in to_del:
+    #         del term_dataset[x]
 
-        print("Read the terms..\n","termbase size:",len(termBase))
+    #     print("Read the terms..\n","termbase size:",len(termBase))
 
-        if args.enrichment_type == "community":
-            print ("Communuty enrichment..")
-            if args.community_file:
-                components = defaultdict(list)
-                with open(args.community_file) as cf:
-                    for line in cf:
-                        node, module = line.strip().split()
-                        components[module].append(node)
-            else:                    
-                components, individual = run_infomap(G)
+    #     if args.enrichment_type == "community":
+    #         print ("Communuty enrichment..")
+    #         if args.community_file:
+    #             components = defaultdict(list)
+    #             with open(args.community_file) as cf:
+    #                 for line in cf:
+    #                     node, module = line.strip().split()
+    #                     components[module].append(node)
+    #         else:                    
+    #             components, individual = run_infomap(G)
 
-            components = sorted(components.values(),key=len,reverse=True)
+    #         components = sorted(components.values(),key=len,reverse=True)
 
-        elif args.enrichment_type == "components":
-            print ("Component enrichment..")
-            components = sorted(nx.connected_components(G),key=len,reverse=True)
+    #     elif args.enrichment_type == "components":
+    #         print ("Component enrichment..")
+    #         components = sorted(nx.connected_components(G),key=len,reverse=True)
 
-        result_terms = {}
-        component_size = 0
+    #     result_terms = {}
+    #     component_size = 0
 
-        columns2 = ['observation','term','pval','corrected_pval','significant']
-        pvals = pd.DataFrame(columns=columns2)
+    #     columns2 = ['observation','term','pval','corrected_pval','significant']
+    #     pvals = pd.DataFrame(columns=columns2)
 
-        ## this is to be done on GPU, theoretically..
+    #     ## this is to be done on GPU, theoretically..
 
-        print ("Beginning enrichment..")
-        for enum,component in enumerate(components):
+    #     print ("Beginning enrichment..")
+    #     for enum,component in enumerate(components):
 
-            component = ["".join(x.split("_")[1:3]) for x in component]
-            result_terms[enum]={}
+    #         component = ["".join(x.split("_")[1:3]) for x in component]
+    #         result_terms[enum]={}
 
-            def parallel_enrichment(term):
-                term = termBase[term]
-                pval = calculate_pval(component,term_dataset,term)
-                return {'observation' : enum,'term' : term,'pval' : pval}
+    #         def parallel_enrichment(term):
+    #             term = termBase[term]
+    #             pval = calculate_pval(component,term_dataset,term)
+    #             return {'observation' : enum,'term' : term,'pval' : pval}
 
-            pool = mp.Pool(mp.cpu_count())
-            inputs = [x for x in range(0,len(termBase))]
-            results = pool.map(parallel_enrichment,inputs)
+    #         pool = mp.Pool(mp.cpu_count())
+    #         inputs = [x for x in range(0,len(termBase))]
+    #         results = pool.map(parallel_enrichment,inputs)
 
-            pool.close()
-            pool.join() ## this merges processes
+    #         pool.close()
+    #         pool.join() ## this merges processes
 
-            tmpframe = pd.DataFrame(columns=['observation','term','pval'])
-            tmpframe = tmpframe.append(results,ignore_index=True)
-            significant, p_adjusted, sidak, bonf = multipletests(tmpframe['pval'],method="fdr_bh",is_sorted=False, returnsorted=False, alpha=0.01)
-            tmpframe['corrected_pval'] = pd.Series(p_adjusted)
-            tmpframe['significant'] = pd.Series(significant)
-            tmpframe = tmpframe[tmpframe['significant'] == True]
-            if not tmpframe.empty:
-                print(tmpframe)
-            with open(args.enrichment_outfile, 'a') as f:
-                tmpframe.to_csv(f, header=False)
+    #         tmpframe = pd.DataFrame(columns=['observation','term','pval'])
+    #         tmpframe = tmpframe.append(results,ignore_index=True)
+    #         significant, p_adjusted, sidak, bonf = multipletests(tmpframe['pval'],method="fdr_bh",is_sorted=False, returnsorted=False, alpha=0.01)
+    #         tmpframe['corrected_pval'] = pd.Series(p_adjusted)
+    #         tmpframe['significant'] = pd.Series(significant)
+    #         tmpframe = tmpframe[tmpframe['significant'] == True]
+    #         if not tmpframe.empty:
+    #             print(tmpframe)
+    #         with open(args.enrichment_outfile, 'a') as f:
+    #             tmpframe.to_csv(f, header=False)
