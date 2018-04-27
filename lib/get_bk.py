@@ -161,7 +161,7 @@ class make_request:
                     sourceterms = node_hash[int(edge['source'])]
                     targets = node_hash[int(edge['target'])]
                     if connected == False:
-                        print(sourceterms[0],targets[0])
+                        #print(sourceterms[0],targets[0])
                         G.add_node(sourceterms[0],degree=sourceterms[1],color=sourceterms[2])
                         G.add_node(targets[0],degree=targets[1],color=targets[2])
                         G.add_edge(sourceterms[0],targets[0],weight=edge['reliability'], key=edge['key'])

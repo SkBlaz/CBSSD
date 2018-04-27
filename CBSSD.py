@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
     ## identify subgroups
     print ("STEP 3: subgroup identification")
-    community_cluster_n3(parsed.knowledge_graph,parsed.term_list,parsed.gaf_mapping,parsed.n3_samples,parsed.community_map,method=parsed.community_type,multiplex = parsed.multiplex,community_size_threshold=args.community_size_threshold)
+    community_cluster_n3(parsed.knowledge_graph,parsed.term_list,parsed.gaf_mapping,parsed.n3_samples,parsed.community_map,method=parsed.community_type,multiplex = parsed.multiplex,community_size_threshold=parsed.community_size_threshold)
 
     ## learn details about subgroups
     print ("STEP 4: Learning")

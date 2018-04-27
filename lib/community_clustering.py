@@ -127,12 +127,46 @@ def monoplex_community(graph,overlapping="no"):
     shutil.rmtree("tmp", ignore_errors=False, onerror=None)
     return partitions
 
+def return_community_mapping(predictions,termlist):
+    community_map = []
+    for k,v in predictions.items():
+        try:
+            term = k.split(":")[1]        
+            if term in termlist:
+                outterm = term+" "+str(v)
+                community_map.append(outterm)
+        except:
+            pass ## mapping non-existent
+                
+    return community_map
+
+def read_termlist(terms):
+
+    termlist = []
+    with open(terms) as nl:
+        for line in nl:
+            parts = line.strip().split()
+            termlist.append(parts[0])
+            
+    return termlist
+
+def parse_gaf_file(gaf_mappings):
+    uniGO = defaultdict(list)    
+    with open(gaf_mappings) as im:
+        for line in im:
+            parts = line.split("\t")
+            try:
+                uniGO[parts[1]].append(parts[4]) ## GO and ref both added
+                uniGO[parts[1]].append(parts[3])
+            except:
+                pass
+    return uniGO
+
 def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,map_folder,method="louvain",multiplex = "no",community_size_threshold=0,overlapping="no"):
 
     G = nx.read_gpickle(input_graph)
 
-    ## split into distinct layers before doing community detection        
-    
+    ## split into distinct layers before doing community detection            
     Gx = nx.Graph()
     nodes = G.nodes(data=False)
     edges = G.edges(data=False)
@@ -149,35 +183,13 @@ def community_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,ma
         else:
             predictions = monoplex_community(Gx, overlapping=overlapping)
     
-    uniGO = defaultdict(list)    
-    with open(mapping_file) as im:
-        for line in im:
-            parts = line.split("\t")
-            try:
-                uniGO[parts[1]].append(parts[4]) ## GO and ref both added
-                uniGO[parts[1]].append(parts[3])
-            except:
-                pass
+    uniGO = parse_gaf_file(mapping_file)
 
     print ("INFO: number of terms parsed:",len(uniGO.keys()))
-    termlist = []
-
-    with open(termlist_infile) as nl:
-        for line in nl:
-            parts = line.strip().split()
-            termlist.append(parts[0])
+    termlist = read_termlist(termlist_infile)
 
     ## extract nodes, which are parts of communities -- works for UniProts currently.
-    community_map = []
-    for k,v in predictions.items():
-        try:
-            term = k.split(":")[1]        
-            if term in termlist:
-                outterm = term+" "+str(v)
-                community_map.append(outterm)
-        except:
-            pass ## invalid term assignment
-
+    community_map = return_community_mapping(predictions,termlist)
     ## write to file
     with open(map_folder, 'w') as f:
         f.write("\n".join(community_map))
