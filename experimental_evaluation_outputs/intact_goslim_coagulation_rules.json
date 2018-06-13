@@ -1,0 +1,25 @@
+{
+  "1_community": [
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634) [cov=26, pos=26, prec=1.000, lift=1.139, pval=0.000]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634), annotated_with(X, root) [cov=26, pos=26, prec=1.000, lift=1.139, pval=0.000]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634), annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634) [cov=26, pos=26, prec=1.000, lift=1.139, pval=0.000]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634) [cov=26, pos=26, prec=1.000, lift=1.139, pval=0.000]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634), annotated_with(X, root) [cov=26, pos=26, prec=1.000, lift=1.139, pval=0.000]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634), annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634) [cov=26, pos=26, prec=1.000, lift=1.139, pval=0.000]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634), annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634) [cov=26, pos=26, prec=1.000, lift=1.139, pval=0.000]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634), annotated_with(X, root), annotated_with(X, root) [cov=26, pos=26, prec=1.000, lift=1.139, pval=0.000]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634), annotated_with(X, root), annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634) [cov=26, pos=26, prec=1.000, lift=1.139, pval=0.000]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634), annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634), annotated_with(X, root) [cov=26, pos=26, prec=1.000, lift=1.139, pval=0.000]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634), annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634), annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634) [cov=26, pos=26, prec=1.000, lift=1.139, pval=0.000]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634), annotated_with(X, root) [cov=26, pos=26, prec=1.000, lift=1.139, pval=0.000]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634), annotated_with(X, http://purl.obolibrary.org/obo/GO:0005634) [cov=26, pos=26, prec=1.000, lift=1.139, pval=0.000]"
+  ], 
+  "429_community": [], 
+  "3_community": [], 
+  "11_community": [], 
+  "53_community": [], 
+  "332_community": [], 
+  "28_community": [], 
+  "4_community": [], 
+  "37_community": []
+}

@@ -4,29 +4,27 @@ import argparse
 from collections import defaultdict
 import rdflib
 import os
+from .parsers import parse_gaf_file
 
-
-def obo2n3(obofile,n3out):
+def obo2n3(obofile,n3out, gaf_file):
 
     ontology = defaultdict(list)
     current_term = ""
-    obofile = obofile.replace("/","")
+    #obofile = obofile.replace("/","")
 
+    gaf_mappings = parse_gaf_file(gaf_file)
+    
     ## iterate through all files
-    for onto in os.listdir(obofile):
-        if ".obo" in onto:
-            obopath = obofile+"/"+onto
-            print ("INFO: parsing the",obopath)
-            with open(obopath) as obo:
-                for line in obo:            
-                    parts = line.split()
-                    try:
-                        if parts[0] == "id:":
-                            current_term = parts[1]
-                        if parts[0] == "is_a:":
-                            ontology[current_term].append(parts[1])
-                    except:
-                        pass
+    with open(obofile) as obo:
+        for line in obo:            
+            parts = line.split()
+            try:
+                if parts[0] == "id:":
+                    current_term = parts[1]
+                if parts[0] == "is_a:":
+                    ontology[current_term].append(parts[1])
+            except:
+                pass
 
     print ("INFO: ontology terms added:", len(ontology.keys()))
     ## construct an ontology graph
@@ -41,10 +39,43 @@ def obo2n3(obofile,n3out):
         for item in v:
             annotation_uri = rdflib.term.URIRef('%s%s' % (obo_uri, rdflib.Literal(item)))
             g.add((annotation_uri, rdflib.RDFS.subClassOf,u))
+
+
+
+        #     <http://purl.obolibrary.org/obo/AATF> ns1:is_a <http://purl.obolibrary.org/obo/GO_0003700>,
+        # <http://purl.obolibrary.org/obo/GO_0005515>,
+        # <http://purl.obolibrary.org/obo/GO_0005634>,
+        # <http://purl.obolibrary.org/obo/GO_0005730>,
+        # <http://purl.obolibrary.org/obo/GO_0005737>,
+        # <http://purl.obolibrary.org/obo/GO_0005794>,
+        # <http://purl.obolibrary.org/obo/GO_0005813>,
+        # <http://purl.obolibrary.org/obo/GO_0005925>,
+        # <http://purl.obolibrary.org/obo/GO_0006974>,
+        # <http://purl.obolibrary.org/obo/GO_0007155>,
+        # <http://purl.obolibrary.org/obo/GO_0007346>,
+        # <http://purl.obolibrary.org/obo/GO_0032929>,
+        # <http://purl.obolibrary.org/obo/GO_0040016>,
+        # <http://purl.obolibrary.org/obo/GO_0042254>,
+        # <http://purl.obolibrary.org/obo/GO_0042985>,
+        # <http://purl.obolibrary.org/obo/GO_0043065>,
+        # <http://purl.obolibrary.org/obo/GO_0043066>,
+        # <http://purl.obolibrary.org/obo/GO_0043522>,
+        # <http://purl.obolibrary.org/obo/GO_0044822>,
+        # <http://purl.obolibrary.org/obo/GO_0045944>,
+        # <http://purl.obolibrary.org/obo/GO_0048011>,
+        # <http://purl.obolibrary.org/obo/GO_0048156>,
+        # <http://purl.obolibrary.org/obo/GO_0097190>,
+        # <http://purl.obolibrary.org/obo/GO_2000378> .
         
-        
+    # for k,v in gaf_mappings.items():
+    #      u = rdflib.term.URIRef('%s%s' % (obo_uri, k))
+    #      for term in v:
+    #          annotation_uri = rdflib.term.URIRef('%s%s' % (obo_uri, rdflib.Literal(term)))
+    #          g.add((u, rdflib.RDFS.subClassOf,annotation_uri))         
+            
     g.serialize(destination=n3out,format="n3")
-    
+
+    ## tukaj dodaj gaf anotacije morda
 
 if __name__ == '__main__':
     

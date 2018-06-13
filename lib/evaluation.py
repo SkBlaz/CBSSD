@@ -2,22 +2,8 @@
 import numpy as np
 import json
 import re
-from collections import defaultdict
-
-def parse_gaf(ifile):
-    
-    container = defaultdict(list)    
-    with open(ifile) as inf:
-        for line in inf:
-            line = line.strip().split("\t")
-            try:
-                container[line[4]].append(line[1])
-            except:
-                pass
-
-            
-    return container
-
+from collections import defaultdict,Counter
+from .parsers import parse_gaf_file,read_termlist,read_uniprot_GO,read_topology_mappings
 
 def load_terms(tfile):
     terms = []
@@ -26,98 +12,168 @@ def load_terms(tfile):
             line = line.strip()
             terms.append(line)
     return terms
-
-def get_term_coverage(goterms,found_goterms,input_terms):
-
-    cover = 0
-    processed_terms = []
-    for x in input_terms:
-        for j in found_goterms:
-            if x in goterms[j]:
-                if x not in processed_terms:
-                    cover += 1
-                processed_terms.append(x)
-
-
-    return (cover*100/len(input_terms))
     
-
 def load_rules(rfile):
 
-    compiled = re.compile("GO:.......")
-    hedwig_out = defaultdict(list)
-    resultterms = []
+    compiled = re.compile("GO:\d+")
+    hedwig_out = {}
     with open(rfile) as data_file:    
         data = json.load(data_file)
         for k,v in data.items():
-            for rule in v:                
+            enr = {}            
+            for en, rule in enumerate(v):                
                 results = compiled.findall(str(rule))
-                for result in results:
-                    resultterms.append(result)
-                    hedwig_out[k].append(result)
+                enr[en] = results                    
+            hedwig_out[k] = enr
+    return hedwig_out
 
 
-    return (hedwig_out, resultterms)
+def WRAcc_measure_rules(topology_mapping, rules_individual,term_dataset):
+
+    ## N = len topmap
+    ## n(C) all examples of this community
+    ## n(Cnd) covered examples
+    ## n(cnnd and c) correctly covered examples
+
+    all_examples = []
+    for k,v in topology_mapping.items():
+        all_examples.append(v)
+        
+    class_counts = {x : len(y) for x,y in topology_mapping.items()}
+    all_examples = set.union(*all_examples)
+    N = len(all_examples)
+
+    all_terms = set.union(*topology_mapping.values())
+    all_wracc = []
+    for annotated_community, rules in rules_individual.items():
+        unis = topology_mapping[annotated_community.split("_")[0]]
+        for k,v in rules.items():            
+            all_examples_target = len(unis)
+            covered_target = 0
+            covered_all = 0
+            for uni in unis:
+                terms = term_dataset[uni]
+                for x in v:
+                    if x in terms:
+                        covered_target+=1
+                    else:
+                        break
+
+            for uni in all_terms:
+                terms = term_dataset[uni]
+                for x in v:
+                    if x in terms:
+                        covered_all+=1
+                    else:
+                        break
+
+#            print(covered_all,N,covered_target,all_examples_target)
+            try:
+                wracc = (covered_all/N)*((covered_target/covered_all)-all_examples_target/N)
+                all_wracc.append(wracc)
+                
+            except:
+                pass            
+
+    return (np.mean(all_wracc),np.amax(all_wracc),np.amin(all_wracc))
+
+def get_p_term(term,term_database,all_terms):
+    return len(term_database[term])/all_terms
+
+def ic_measure_rules(topology_mapping, rules_individual, term_dataset, all_c):
+
+    inverse_term_dataset = defaultdict(set)
+    for x,y in term_dataset.items():
+        for j in y:
+            inverse_term_dataset[j].add(x)
+    
+    all_ic = []
+    partition_specific_ic = []
+    for annotated_community, rules in rules_individual.items():
+        pic = 0
+        for name, rule in rules.items():
+            total_ic = 0
+            for term in rule:
+                total_ic+=-np.log(get_p_term(term,inverse_term_dataset,all_c))
+            all_ic.append(total_ic)
+            pic+=total_ic
+            
+        partition_specific_ic.append(pic)
+
+    
+    return (np.mean(all_ic),np.amax(all_ic),np.amin(all_ic),np.mean(partition_specific_ic),np.amax(partition_specific_ic),np.amin(partition_specific_ic))
 
 
+def compute_coverage_rules(rules_individual, term_dataset, topology_map):
 
+    all_unis = set.union(*topology_map.values())
+    all_terms = set()
+    for annotated_community, rules in rules_individual.items():
+        for k,v in rules.items():
+            for x in v:
+                all_terms.add(x)
+                
+    inverse_mappings = defaultdict(list)
+    for k,v in term_dataset.items():
+        for j in v:
+            inverse_mappings[j].append(k)
 
+    all_tmaps = set.union(*[set(inverse_mappings[x]) for x in all_terms])
+    return len(set.intersection(all_tmaps,all_unis))/len(all_unis)
+    
+def compute_statistics_rules(gaf_file,result_file,inputs,ftype="rules",outname=None):
+
+    ## return values for results    
+    term_dataset, term_database, all_counts =  read_uniprot_GO(gaf_file,verbose=False)
+    topology_map = read_topology_mappings(inputs)
+    if ftype == "rules":
+        rules_individual = load_rules(result_file)
+    else:
+        rules_individual = result_file
+    mean_wracc,max_wracc,min_wracc = WRAcc_measure_rules(topology_map,rules_individual,term_dataset)
+
+    mean_ic,max_ic,min_ic,mean_pic,max_pic,min_pic = ic_measure_rules(topology_map,rules_individual,term_dataset,all_counts)
+
+    coverage = compute_coverage_rules(rules_individual,term_dataset,topology_map)
+    print(outname, ftype, mean_wracc,max_wracc,min_wracc,mean_ic,max_ic,min_ic,mean_pic,max_pic,min_pic,coverage)
+
+def convert_terms_to_rules(tfile):
+
+    ## parse output from local enrichment
+    cmap = defaultdict(list)
+    with open(tfile) as tfl:
+        for line in tfl:
+            line = line.strip().split()
+            cmap[line[1]].append([line[2]])
+
+    nd = {}
+    for k,v in cmap.items():
+        v = {e : j for e,j in enumerate(v)}
+        nd[k] = v
+
+    return nd
+    
 if __name__ == "__main__":
 
     import argparse
     parser_init = argparse.ArgumentParser()    
     parser_init.add_argument("--input_gaf", help="Used ontology as background knowledge")
-    parser_init.add_argument("--rules", help="hewdig outputs")
-    parser_init.add_argument("--terms", help="enrichment outputs")
-    parser_init.add_argument("--input_accessions", help="Accession input file.")
+    parser_init.add_argument("--enrichment_results", help="hewdig outputs")
+    parser_init.add_argument("--result_type", help="hewdig outputs")
+    parser_init.add_argument("--partition_map", help="Accession input file.")
     parser = parser_init.parse_args()
-    
-    count_data_raw = parse_gaf(parser.input_gaf)
-    count_data = {k : len(set(v)) for k,v in count_data_raw.items()}
-    total_count = sum(count_data.values())
-    core_set = []
-    with open(parser.input_accessions) as ia:
-        for line in ia:
-            core_set.append(line.strip())
 
-    core_set = set(core_set)        
-    termset = load_terms(parser.terms)
-    ruleset, all_termrules = load_rules(parser.rules)    
-    all_termrules = set(all_termrules)
-    termset = set(termset)
-
-    DAVID_coverage = get_term_coverage(count_data_raw,termset,core_set)
-    HEDWIG_coverage = get_term_coverage(count_data_raw,all_termrules,core_set)
-
-    print("Rule coverage: {}, enrichment coverage {}".format(HEDWIG_coverage,DAVID_coverage))
-    ## GO coverage
-    print("Number rules: {}, Number terms: {}".format(len(all_termrules),len(termset)))
-
-    ## interestingness
-    itr= []
-    itr2 = []
-    for x in all_termrules:
-        tcount1 = 0
-        try:
-            tcount1 += count_data[x]
-            itr.append(-np.log(count_data[x]/total_count))
-        except:
-            pass
-
-    for x2 in termset:
-        tcount2 = 0
-        try:
-            tcount2 += count_data[x2]
-            itr2.append(-np.log(count_data[x]/total_count))
-        except:
-            pass
-            
-    intR = tcount1/len(all_termrules)
-    intT = tcount2/len(termset)
-    itr = np.mean(itr)/len(all_termrules)
-    itr2 = np.mean(itr2)/len(termset)
-
+    if parser.result_type == "rules":
+        compute_statistics_rules(parser.input_gaf,parser.enrichment_results,parser.partition_map,ftype="rules",outname = parser.enrichment_results.split("/")[-1].split(".")[0])
         
-    ## term coverage
-    print("Mean coverage rules: {}, Mean coverage terms: {}".format(intR,intT))
-    print("Interestingness: {}, Interestingness: {}".format(itr,itr2))
+    elif parser.result_type == "terms":
+        ruleset = convert_terms_to_rules(parser.enrichment_results)
+        compute_statistics_rules(parser.input_gaf,ruleset,parser.partition_map,ftype="terms",outname = parser.enrichment_results.split("/")[-1].split(".")[0])
+        
+        ## read term list
+        ## change format to rules
+        ## parse this properly
+        pass
+        
+    ## read either rules or terms
+    ## output values for the table

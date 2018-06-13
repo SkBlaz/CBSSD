@@ -78,7 +78,7 @@ class make_request:
         return G
 
     def execute_query_inc(self,sourceterms,targetterms=None, maxnodes=2000,grouping=0, div=4,connected=False):
-
+        
         max_terms = len(sourceterms)
         ## init the graph structure..
 
@@ -104,7 +104,6 @@ class make_request:
             if e % step == 0 and e > 0:
 
                 sterms = ",".join(tmplist)
-
                 tmplist = []                
                 try:
                     if targetterms == None:
@@ -125,7 +124,6 @@ class make_request:
                 print ("Progress: ",str(round(float(e/max_terms)*100,2)),"% complete.", nx.info(self.graph))
 
                 iteration += 1
-
                 nodes = json.loads(json_graph)['nodes']
                 edges = json.loads(json_graph)['links']                
                 node_hash = {}
@@ -266,12 +264,12 @@ class make_request:
         
         return
 
-def read_example_datalist(datafile,whole=False):
+def read_example_datalist(datafile,whole=False,database="UniProt:"):
 
     outlist = []
     with open(datafile) as cl:
         for line in cl:
-            outlist.append("UniProt:"+line.replace("\n",""))
+            outlist.append(database+line.replace("\n",""))
 
     return (outlist)        
 
@@ -361,5 +359,3 @@ if __name__ == '__main__':
         ##separate layers
         if (parser.visualize_multiplex):
             visualize_multiplex_biomine(result_graph,parser.output_image)
-
-

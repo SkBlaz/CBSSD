@@ -1,0 +1,18 @@
+{
+  "1_community": [
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0043085) [cov=1, pos=1, prec=1.000, lift=2.000, pval=0.333]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0035967) [cov=1, pos=1, prec=1.000, lift=2.000, pval=0.333]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0045600) [cov=1, pos=1, prec=1.000, lift=2.000, pval=0.333]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0034212) [cov=1, pos=1, prec=1.000, lift=2.000, pval=0.333]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0044224) [cov=1, pos=1, prec=1.000, lift=2.000, pval=0.333]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0070201) [cov=1, pos=1, prec=1.000, lift=2.000, pval=0.333]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0048511) [cov=1, pos=1, prec=1.000, lift=2.000, pval=0.333]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0005694) [cov=1, pos=1, prec=1.000, lift=2.000, pval=0.333]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:1905555) [cov=1, pos=1, prec=1.000, lift=2.000, pval=0.333]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0001077) [cov=1, pos=1, prec=1.000, lift=2.000, pval=0.333]", 
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0035176) [cov=1, pos=1, prec=1.000, lift=2.000, pval=0.333]"
+  ], 
+  "663_community": [
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0010941) [cov=1, pos=1, prec=1.000, lift=2.000, pval=0.333]"
+  ]
+}

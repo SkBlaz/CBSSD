@@ -6,109 +6,32 @@ from scipy.stats import fisher_exact
 import multiprocessing as mp
 import random
 from statsmodels.sandbox.stats.multicomp import multipletests
-from collections import defaultdict
+from collections import defaultdict, Counter
+from .parsers import parse_gaf_file,read_termlist,read_topology_mappings,read_uniprot_GO
+import pandas as pd
 
-def read_SCOP_terms(filename):
-    term_counts = defaultdict(list)
-    candidate_terms = set()
-    scop_filter = 2
-    
-    with open(filename) as scopfile:
-        for line in scopfile:
-            if not line.startswith("#"):
-                if len(line.split()) == 6:
-                    pdb,chain,scop_level = line.split()[4],line.split()[5].split(":")[0],".".join(line.split()[2].split(".")[0:scop_filter])
-                    candidate_terms.add(scop_level)
-                    term_counts[pdb+chain].append(scop_level)
-
-    return (term_counts,list(candidate_terms))
-    
-
-def read_pdb_GO(filename):
-
-    ## this function reads the base pdb GO file and uses it as the seed for further enrichment analysis
-    
-    term_counts = defaultdict(list)
-    candidate_terms = set()
-    
-    if filename.endswith(".tsv"):    
-        with open(filename) as fn:
-            for line in fn:
-                try:
-                    pdbID,GOterm = "".join(line.split()[0:2]),line.split()[5]
-                    term_counts[pdbID].append(GOterm)                        
-                    candidate_terms.add(GOterm) ## this is the candidate base to search through
-                except:
-                    pass
-                
-    elif filename.endswith(".gz"):
-        import gzip
-        with gzip.open(filename,'rt') as fn:
-            for line in fn:
-                try:
-                    pdbID,GOterm = "".join(line.split()[0:2]),line.split()[5]
-                    term_counts[pdbID].append(GOterm)                        
-                    candidate_terms.add(GOterm) ## this is the candidate base to search through
-                except:
-                    pass
-
-        
-    return (term_counts,list(candidate_terms))
-
-def preprocess_pfam(term):
-
-    return term.replace("b'","")
-
-def read_pfam_terms(filename):
-
-    term_counts = defaultdict(list)
-    candidate_terms = set()
-
-    if filename.endswith(".tsv"):
-        with open(filename) as fn:
-            for line in fn:
-                try:
-                    pdbID,pfamterm = "".join(line.split()[0:2]),line.split()[3]
-                    term_counts[pdbID].append(GOterm)                        
-                    candidate_terms.add(GOterm)
-                except:
-                    pass
-                
-    elif filename.endswith(".gz"):
-        import gzip
-        with gzip.open(filename,'rt') as fn:
-            for line in fn:
-                a = line.split()
-                pdbID = a[0]+a[1]
-                GOterm = a[3]
-                try:
-                    term_counts[pdbID].append(GOterm)                        
-                    candidate_terms.add(GOterm)
-                except:
-                    pass
-        
-    return (term_counts,list(candidate_terms))
+def calculate_pval(term):
 
 
-def calculate_pval(query,dbsource,term,size=False):
-
+#    _partition_name,_partition_entries,term,_map_term_database,_number_of_all_annotated
     ## this calculates p value
-    
-    qcount = 0
-    dbcount = 0
-    
-    for q in query:
-        if q in dbsource[q]:
-            qcount+=1
-            
-    for v in dbsource.values():
-        if term in v:
-            dbcount +=1
+    #print(component, term_dataset, term, count_all)
 
-    query_counts = [qcount, len(query)-qcount]
-    pop_counts = [dbcount, len(dbsource)-dbcount]    
+    query_term = term[0]
+    query_term_count_population = term[1]
+
+    inside_local = 0
+    outside_local = 0
+    for x in _partition_entries:
+        terms = _map_term_database[x]
+        if query_term in terms:
+            inside_local+=1
+        else:
+            outside_local+=1
+
+    query_counts = [inside_local, query_term_count_population]
+    pop_counts = [outside_local, _number_of_all_annotated-query_term_count_population]
     p_value = fisher_exact([query_counts,pop_counts])[1]
-
     return p_value
 
 def multiple_test_correction(input_dataset):
@@ -134,135 +57,81 @@ def multiple_test_correction(input_dataset):
             if (significant == True):
                 print (key,term,significant,tmp,pval)
 
-def read_GO_gaf(gaf_file):
 
-    #return a dictionary, where for each go term: how many genes annotated, all genes
-    # a = genes from list annotated with that term
-    # b = 1-a
-    # c = mapping[term]
-    # d = all_genes - c
-    pass
+def parallel_enrichment(term):
+    pval = calculate_pval(_term_database[term])
+    return {'observation' : _partition_name,'term' : _term_database[term][0],'pval' : pval}
 
-def read_term_list(term_list):
-    ## term
-    pass
+def compute_enrichment(term_dataset, term_database, topology_map, all_counts, whole_term_list=False):
 
-def read_topology_mappings(mapping):
-
-    ## read the mapping in for of n:term
-    components = defaultdict(list)
-    with open(mapping) as cf:
-        for line in cf:
-            node, module = line.strip().split()
-            components[module].append(node)            
-    return components
-
-def compute_enrichment(termlist_mapping, term_base):
-    #columns2 = ['observation','term','pval','corrected_pval','significant']
-
-    ## for each mapping, compute enrichment
+    if whole_term_list:
+        tvals = set.union(*[x for x in topology_map.values()])
+        topology_map = {}
+        topology_map['1_community'] = tvals
     
-    def parallel_enrichment(term):
-        term = termBase[term]
-        pval = calculate_pval(component,term_dataset,term)
-        return {'observation' : enum,'term' : term,'pval' : pval}
+    global _partition_name
+    global _partition_entries
+    global _term_database
+    global _map_term_database
+    global _number_of_all_annotated
 
-    pool = mp.Pool(mp.cpu_count())
-    inputs = [x for x in range(0,len(termBase))]
-    results = pool.map(parallel_enrichment,inputs)
-
-    pool.close()
-    pool.join() ## this merges processes
-
-    ## correct for multiple tests
-    ## return
+    _number_of_all_annotated = all_counts
+    _term_database = {en : x for en, x in enumerate(term_database.items())} ## database of all annotations
     
-    pass
+    _map_term_database = term_dataset ## entry to acc mappings
+
+    finalFrame = pd.DataFrame()
+    
+    for k, v in topology_map.items():
+
+        print("Computing enrichment for partition {}".format(k))
+        ## reassign for parallel usage
+        _partition_name = k
+        _partition_entries = v
+
+        ## computational pool instantiation
+        ncpu = 2 #mp.cpu_count()
+        pool = mp.Pool(ncpu)
+        
+        ## compute the results
+        n = len(term_database)
+        step = ncpu ## number of parallel processes
+        jobs = [range(n)[i:i + step] for i in range(0, n, step)] ## generate jobs
+
+        ## result container
+        tmpframe = pd.DataFrame(columns=['observation','term','pval'])
+        results = [parallel_enrichment(x) for x in range(n)]
+        
+        # for batch in jobs:
+        #     results = pool.map(parallel_enrichment,batch)
+        tmpframe = tmpframe.append(results,ignore_index=True)
+
+        ## multitest corrections on partition level
+        significant, p_adjusted, sidak, bonf = multipletests(tmpframe['pval'],method="fdr_bh",is_sorted=False, returnsorted=False, alpha=0.05)
+        tmpframe['corrected_pval_fdr_bh'] = pd.Series(p_adjusted)
+        tmpframe['significant'] = pd.Series(significant)
+        tmpframe = tmpframe[tmpframe['significant'] == True]
+        finalFrame = finalFrame.append(tmpframe,ignore_index=True)
+    
+    return finalFrame
 
 
 if __name__ == "__main__":
+
     print("Starting enrichment analysis..")
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--filename",default="./test.txt")
+    parser.add_argument("--filename_mappings",default="./test.txt")
+    args = parser.parse_args()
 
-    ## perform enrichment analysis
+    ## 1.) read the database.
+    term_dataset, term_database, all_counts =  read_uniprot_GO(args.filename)
+    
+    ## 2.) partition function dict.
+    topology_map = read_topology_mappings(args.filename_mappings)
 
-    # random.seed(123)
-    # if args.termbase:
+    ## 3.) calculate p-vals.
+    significant_results = compute_enrichment(term_dataset, term_database, topology_map, all_counts,whole_term_list=False)
 
-    #     if args.termbase == "GO":
-    #         term_dataset, termBase = read_pdb_GO(args.termfile)
-    #     elif args.termbase == "PFAM":
-    #         term_dataset, termBase = read_pfam_terms(args.termfile)
-    #     elif args.termbase == "SCOP":
-    #         term_dataset, termBase = read_SCOP_terms(args.termfile)
-    #     else:
-    #         exit
-
-    #     rep_chains = ["".join(x.split("_")[1:3]) for x in G.nodes()]
-
-    #     ## remove items not present in the network
-
-    #     to_del = []
-    #     for k in term_dataset.keys():
-    #         if k not in rep_chains:
-    #             to_del.append(k)
-
-    #     print("Removing",len(to_del),"terms.")
-
-    #     for x in to_del:
-    #         del term_dataset[x]
-
-    #     print("Read the terms..\n","termbase size:",len(termBase))
-
-    #     if args.enrichment_type == "community":
-    #         print ("Communuty enrichment..")
-    #         if args.community_file:
-    #             components = defaultdict(list)
-    #             with open(args.community_file) as cf:
-    #                 for line in cf:
-    #                     node, module = line.strip().split()
-    #                     components[module].append(node)
-    #         else:                    
-    #             components, individual = run_infomap(G)
-
-    #         components = sorted(components.values(),key=len,reverse=True)
-
-    #     elif args.enrichment_type == "components":
-    #         print ("Component enrichment..")
-    #         components = sorted(nx.connected_components(G),key=len,reverse=True)
-
-    #     result_terms = {}
-    #     component_size = 0
-
-    #     columns2 = ['observation','term','pval','corrected_pval','significant']
-    #     pvals = pd.DataFrame(columns=columns2)
-
-    #     ## this is to be done on GPU, theoretically..
-
-    #     print ("Beginning enrichment..")
-    #     for enum,component in enumerate(components):
-
-    #         component = ["".join(x.split("_")[1:3]) for x in component]
-    #         result_terms[enum]={}
-
-    #         def parallel_enrichment(term):
-    #             term = termBase[term]
-    #             pval = calculate_pval(component,term_dataset,term)
-    #             return {'observation' : enum,'term' : term,'pval' : pval}
-
-    #         pool = mp.Pool(mp.cpu_count())
-    #         inputs = [x for x in range(0,len(termBase))]
-    #         results = pool.map(parallel_enrichment,inputs)
-
-    #         pool.close()
-    #         pool.join() ## this merges processes
-
-    #         tmpframe = pd.DataFrame(columns=['observation','term','pval'])
-    #         tmpframe = tmpframe.append(results,ignore_index=True)
-    #         significant, p_adjusted, sidak, bonf = multipletests(tmpframe['pval'],method="fdr_bh",is_sorted=False, returnsorted=False, alpha=0.01)
-    #         tmpframe['corrected_pval'] = pd.Series(p_adjusted)
-    #         tmpframe['significant'] = pd.Series(significant)
-    #         tmpframe = tmpframe[tmpframe['significant'] == True]
-    #         if not tmpframe.empty:
-    #             print(tmpframe)
-    #         with open(args.enrichment_outfile, 'a') as f:
-    #             tmpframe.to_csv(f, header=False)
+    significant_results.to_csv("../example_outputs/term_examples.txt",sep=" ",header=False)

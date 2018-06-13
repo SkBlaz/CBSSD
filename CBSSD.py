@@ -10,7 +10,7 @@ print("""\    __  ____    _____ _____ ___
 
 from lib.get_bk import *
 from lib.obo2n3 import *
-from lib.community_clustering import *
+from lib.partition_clustering import *
 from lib.dbMake import * ## this creates the mandatory databases
 
 import subprocess
@@ -27,16 +27,17 @@ if __name__ == '__main__':
     parser_init.add_argument("--n3_samples", help="Learning samples, derived from the term list..") # Mandatory
     parser_init.add_argument("--gaf_mapping", help="GAF map file, from term to GO..") # Mandatory
     parser_init.add_argument("--rule_output", help="Results..") # Mandatory
-    parser_init.add_argument("--community_type", help="Community detection type..",default="infomap") # Mandatory
+    parser_init.add_argument("--method", help="Partition detection type..",default="infomap") # Mandatory
     parser_init.add_argument("--community_map", help="Identified subgroups..") # Mandatory
     parser_init.add_argument("--download_minimal", help="Download GAF and obo files..")
     parser_init.add_argument("--multiplex", help="Use multiplex structure, where _a_b_c_d are nodes in layers a and c..",default="no")
+    parser_init.add_argument("--beam_size", help="Beam size used with Hedwig",default="50")
     parser_init.add_argument("--community_size_threshold", help="Community size threshold -- up from which size we consider communities",default=0,type=int)
 
     parsed = parser_init.parse_args()
     source = read_example_datalist(parsed.term_list,whole=True)
 
-    hedwig_command = "python2 hedwig/hedwig BK/ "+parsed.n3_samples+" -o "+parsed.rule_output+" -l --adjust=none --beam=10"
+    hedwig_command = "python2 hedwig/hedwig BK/ "+parsed.n3_samples+" -o "+parsed.rule_output+" -l --beam="+parsed.beam_size
 
     ## either download ontology or use own
     if parsed.download_minimal:
@@ -54,12 +55,19 @@ if __name__ == '__main__':
     ## parse custom .obo folder
     print("STEP 2: Background knowledge processing..")
     if parsed.ontology_BK:
-        obo2n3(parsed.ontology_BK, parsed.output_BK)
+        obo2n3(parsed.ontology_BK, parsed.output_BK, parsed.gaf_mapping)
 
     ## identify subgroups
     print ("STEP 3: subgroup identification")
-    community_cluster_n3(parsed.knowledge_graph,parsed.term_list,parsed.gaf_mapping,parsed.n3_samples,parsed.community_map,method=parsed.community_type,multiplex = parsed.multiplex,community_size_threshold=parsed.community_size_threshold)
-
+    partition_cluster_n3(parsed.knowledge_graph,
+                         parsed.term_list,
+                         parsed.gaf_mapping,
+                         parsed.n3_samples,
+                         parsed.community_map,
+                         method=parsed.method,
+                         multiplex = parsed.multiplex,
+                         community_size_threshold=parsed.community_size_threshold)
+    
     ## learn details about subgroups
     print ("STEP 4: Learning")
     print("HEDWIG: "+hedwig_command)

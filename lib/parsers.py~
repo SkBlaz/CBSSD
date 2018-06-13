@@ -1,0 +1,27 @@
+## some generic methods used at many places..
+
+from collections import defaultdict
+import itertools
+
+def read_termlist(terms):
+
+    termlist = []
+    with open(terms) as nl:
+        for line in nl:
+            parts = line.strip().split()
+            termlist.append(parts[0])
+            
+    return termlist
+
+def parse_gaf_file(gaf_mappings):
+    
+    uniGO = defaultdict(set)    
+    with open(gaf_mappings) as im:
+        for line in im:
+            parts = line.split("\t")
+            try:
+                uniGO[parts[1]].add(parts[4]) ## GO and ref both added
+                uniGO[parts[1]].add(parts[3])
+            except:
+                pass
+    return uniGO
