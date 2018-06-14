@@ -14,8 +14,7 @@
 
 
 ```bash
-
-python3 CBSSD.py --step_size 10 --knowledge_graph example_outputs/epigenetics.gpickle --term_list example_inputs/epigenetics.list --ontology_BK example_inputs --output_BK example_outputs/epiBK.n3 --n3_samples example_outputs/epiSam.n3 --gaf_mapping example_inputs/goa_human.gaf --community_map example_outputs/EpiCom.txt --rule_output example_outputs/Epirules.txt 
+python3 CBSSD.py --step_size 10 --knowledge_graph network_datasets/epigenetics.gpickle --term_list term_lists/epigenetics.list --ontology_BK background_knowledge/goslim_generic.obo --output_BK experimental_evaluation_outputs/epiBK.n3 --n3_samples experimental_evaluation_outputs/epiSam_bmn.n3 --method components --gaf_mapping example_inputs/goa_human.gaf --community_map experimental_evaluation_outputs/partition_epigenetics_bmn_cbssd.txt --rule_output experimental_evaluation_outputs/bmn_epi_rules.json
 
 ```
 
