@@ -1,7 +1,6 @@
 # CBSSD
 > **Community-based semantic subgroup discovery (CBSSD)** is an algorithm for knowledge discovery from
-> arbitrary term lists. Current version is targeted at biological term lists, e.g. gene or protein lists, yet
-> the methodology can be applied to any other problem as well.
+> complex networks. Arbitrary network partitions are used as input for a subgroup discovery step, where explainable rule sets are obtained, associating individual partitions with semantic knowledge.
 
 ## Brief algorithm description
 
