@@ -1,3 +1,0 @@
-#!/bin/sh
-
-python ../../hedwig.py ontology/ data.n3 --output=rules --adjust=none --leaves --support=0 --beam=1

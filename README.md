@@ -34,7 +34,7 @@ python3 CBSSD.py --step_size 10 --knowledge_graph network_datasets/epigenetics.g
 
 * Compile InfoMap (folder InfoMap, type make for example)
 * Python libraries: Networkx, Rdflib, Numpy, matplotlib (optional)
-* Install Hedwig by going into the Hedwig folder and write python2 setup.py install - follow instructions
+* Install Hedwig by going into the Hedwig folder and write python3 setup.py install
 * This is it! Run by python3 CBSSD.py ... (example above) ...
 
 # Citation
@@ -61,4 +61,3 @@ isbn="978-3-319-78680-3"
 }
 
 ```
-

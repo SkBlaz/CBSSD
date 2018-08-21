@@ -1,0 +1,30 @@
+----------------------------------------
+Hedwig semantic pattern mining (anze.vavpetic@ijs.si)
+Version: 0.3.1
+Start: 2018-08-21T08:43:34.338409
+Time taken: 0.03 seconds
+Parameters:
+	bk_dir=ontology/
+	data=data.n3
+	format=n3
+	output=rules
+	covered=None
+	mode=subgroups
+	target=None
+	score=lift
+	negations=False
+	alpha=0.05
+	adjust=none
+	FDR=0.05
+	leaves=True
+	learner=heuristic
+	optimalsubclass=False
+	uris=False
+	beam=1
+	support=0.0
+	depth=5
+	nocache=True
+	verbose=False
+----------------------------------------
+'+'(X) <--
+	annotated_with(X, OddVariable) [cov=3, pos=3, prec=1.000, lift=2.000, pval=0.012]

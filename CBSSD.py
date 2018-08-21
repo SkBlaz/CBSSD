@@ -37,7 +37,7 @@ if __name__ == '__main__':
     parsed = parser_init.parse_args()
     source = read_example_datalist(parsed.term_list,whole=True)
 
-    hedwig_command = "python2 hedwig/hedwig BK/ "+parsed.n3_samples+" -o "+parsed.rule_output+" -l --beam="+parsed.beam_size
+    hedwig_command = "python3 hedwig3/hedwig BK/ "+parsed.n3_samples+" -o "+parsed.rule_output+" -l --beam="+parsed.beam_size
 
     ## either download ontology or use own
     if parsed.download_minimal:

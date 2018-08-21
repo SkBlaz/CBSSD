@@ -73,6 +73,7 @@ def WRAcc_measure_rules(topology_mapping, rules_individual,term_dataset):
                 all_wracc.append(wracc)
                 
             except:
+                
                 pass            
 
     return (np.mean(all_wracc),np.amax(all_wracc),np.amin(all_wracc))
