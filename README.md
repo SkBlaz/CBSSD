@@ -11,7 +11,7 @@
 ## IMPORTANT NOTE:
 CBSSD is now a part of Py3plex library: example use is given here: https://github.com/SkBlaz/Py3Plex/blob/master/examples/example_CBSSD.py
 
-# Example use on a simple list of epigenetics-related proteins (this was used as a validation dataset). Mind that .obo files can be put in a separate folder, should more than one ontology be used as background knowledge.
+### Example use on a simple list of epigenetics-related proteins (this was used as a validation dataset). Mind that .obo files can be put in a separate folder, should more than one ontology be used as background knowledge.
 
 
 ```bash
