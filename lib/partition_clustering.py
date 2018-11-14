@@ -15,10 +15,10 @@ def run_infomap(infile,multiplex=False,overlapping="no"):
         call(["infomap/Infomap", "tmp/multiplex_edges.net","out/","-i multiplex","-N 500","--silent"])       
     else:
         if overlapping == "yes":
-            call(["infomap/Infomap", "tmp/monoplex_edges.net","out/","-N 100","--silent","--overlapping"])
+            call(["infomap/Infomap", "tmp/monoplex_edges.net","out/","-N 500","--overlapping","--silent"])
             
         else:
-            call(["infomap/Infomap", "tmp/monoplex_edges.net","out/","-N 100","--silent"])
+            call(["infomap/Infomap", "tmp/monoplex_edges.net","out/","-N 500","--silent"])
 
 def parse_infomap(outfile):
 
@@ -68,6 +68,7 @@ def multiplex_community(graph):
 
         n1 = edge[0]
         n2 = edge[1]
+        
         w = float(edge[2]['weight'])
         layer_first = layermap[n1.split("_")[0]]
         layer_second = layermap[n2.split("_")[0]]
@@ -76,6 +77,7 @@ def multiplex_community(graph):
             nodemap[node_counter] = n1
             node_first = node_counter
             node_counter+=1
+            
         else:
             for k,v in synonym_map.items():
                 if v == n1:
@@ -195,17 +197,18 @@ def identify_components(G):
     return nmmap
 
 def partition_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,map_folder,method="louvain",multiplex = "no",community_size_threshold=0,overlapping="no",include_induced_neighborhood=False):
-    G = nx.read_gpickle(input_graph)
+    Gx = nx.read_gpickle(input_graph)
+
     ## split into distinct layers before doing community detection            
-    Gx = nx.Graph()
-    nodes = G.nodes(data=False)
-    edges = G.edges(data=True)
-    Gx.add_nodes_from(nodes)
-    Gx.add_edges_from(edges)
+    #nodes = G.nodes(data=False)
+    #edges = G.edges(data=True)
+    #Gx.add_nodes_from(nodes)
+    #Gx.add_edges_from(edges)
+    
     if method == "louvain":
         import community
         predictions = community.best_partition(Gx)
-
+        
     if method == "infomap":
         if multiplex != "no":
             predictions = multiplex_community(Gx)

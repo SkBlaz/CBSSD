@@ -7,6 +7,7 @@ import urllib.request
 import urllib.parse
 import json
 import urllib
+import requests
 import networkx as nx
 import numpy as np
 #import rdfmodule as rm
@@ -18,10 +19,10 @@ class make_request:
 
     def __init__(self):
 
-        self.db_url =  'http://biomine.ijs.si/list_databases'
-        self.bm_api = 'http://biomine.ijs.si/api'
+        self.db_url =  'https://biomine.ijs.si/list_databases'
+        self.bm_api = 'https://biomine.ijs.si/api'
         self.databases = json.loads(urllib.request.urlopen(self.db_url).read().decode())['databases']
-        self.graph = nx.Graph()
+        self.graph = nx.MultiGraph()
         self.graph_nodes = []
         
     def get_info(self):
@@ -43,7 +44,7 @@ class make_request:
                                     'targetTerms': 'EntrezGene:93986',
                                     'maxnodes': 500,
                                     'grouping': 5,
-                                          'graph_type': 'json'}).encode("utf-8")
+                                         'graph_type': 'json'}).encode("utf-8")
 
 
         json_graph =  json.loads(urllib.request.urlopen(self.bm_api, params).read().decode())['graph']
@@ -107,16 +108,20 @@ class make_request:
                 tmplist = []                
                 try:
                     if targetterms == None:
-                    
-                        params = urllib.parse.urlencode({'database': self.databases['biomine'][0],
-                                'sourceTerms': sterms,
-                                'maxnodes': maxnodes,
-                                'grouping': grouping,
-                                'graph_type': 'json'}).encode("utf-8")
-                    
-                        json_graph =  json.loads(urllib.request.urlopen(self.bm_api, params).read().decode())['graph']
-                except:
-                    print ("passing")
+
+                        params = {'database': self.databases['biomine'][0],
+                                  'sourceTerms': sterms,
+                                  'maxnodes': maxnodes,
+                                  'grouping': grouping,
+                                  'maxnodes':10000,
+                                  'graph_type': 'json'}
+                        
+                        graph_obj = requests.post(self.bm_api, params).json()['graph']
+                        json_graph =  json.loads(graph_obj)
+                        
+                        
+                except Exception as es:
+                    print ("passing",es)
                     json_graph = json.dumps({'nodes' : [],'links' : []})
                     pass
         
@@ -124,8 +129,8 @@ class make_request:
                 print ("Progress: ",str(round(float(e/max_terms)*100,2)),"% complete.", nx.info(self.graph))
 
                 iteration += 1
-                nodes = json.loads(json_graph)['nodes']
-                edges = json.loads(json_graph)['links']                
+                nodes = json_graph['nodes']
+                edges = json_graph['links']               
                 node_hash = {}
 
                 for id,node in enumerate(nodes):
@@ -155,14 +160,19 @@ class make_request:
                     
                 for edge in edges:
 
-#                    print (edge['source'],node_hash[int(edge['source'])])
                     sourceterms = node_hash[int(edge['source'])]
                     targets = node_hash[int(edge['target'])]
+
+                    reliability = 1
+                    try:
+                        reliability = edge['reliability']
+                    except:
+                        pass ## edge is empirical!
                     if connected == False:
-                        #print(sourceterms[0],targets[0])
+
                         G.add_node(sourceterms[0],degree=sourceterms[1],color=sourceterms[2])
                         G.add_node(targets[0],degree=targets[1],color=targets[2])
-                        G.add_edge(sourceterms[0],targets[0],weight=edge['reliability'], key=edge['key'])
+                        G.add_edge(sourceterms[0],targets[0],weight=reliability, key=edge['key'])
                         
                     else:                        
                         if targets[0] in self.graph_nodes or sourceterms[0] in self.graph_nodes:
@@ -174,22 +184,19 @@ class make_request:
                             
                             G.add_node(sourceterms[0],degree=sourceterms[1],color=sourceterms[2])
                             G.add_node(targets[0],degree=targets[1],color=targets[2])
-                            G.add_edge(sourceterms[0],targets[0],weight=edge['reliability'], key=edge['key'])
+                            G.add_edge(sourceterms[0],targets[0],weight=reliability, key=edge['key'])
 
 
-        ## color according to db entry at least.
-           
-        edgesG = G.edges()
+        ## color according to db entry at least.           
         nodesG = G.nodes(data=True)
         print ("Final size: \n",nx.info(G))
 
         ## assign values to the object for further use
         
         self.graph_node_degree = [int(u[1]['degree']) for u in nodesG]
-        self.graph_node_colors = [u[1]['color'] for u in nodesG]
-        self.graph_weights = [G[u][v]['weight'] for u,v in edgesG]
-        self.graph = G        
-        self.pos = nx.spring_layout(G)
+        self.graph_node_colors = [u[1]['color'] for u in nodesG]    
+        self.graph_weights = [v[2]['weight'] for v in G.edges(data=True)]
+        self.graph = G
         return G
 
     def reset_graph(self):
@@ -198,8 +205,7 @@ class make_request:
         
     def get_graph(self):
 
-        return self.graph
-    
+        return self.graph    
     
     def trim_graph(self, degreetrim):
 
