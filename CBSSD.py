@@ -32,12 +32,13 @@ if __name__ == '__main__':
     parser_init.add_argument("--download_minimal", help="Download GAF and obo files..")
     parser_init.add_argument("--multiplex", help="Use multiplex structure, where _a_b_c_d are nodes in layers a and c..",default="no")
     parser_init.add_argument("--beam_size", help="Beam size used with Hedwig",default="50")
+    parser_init.add_argument("--depth", help="Depth size used with Hedwig",default="10")
     parser_init.add_argument("--community_size_threshold", help="Community size threshold -- up from which size we consider communities",default=0,type=int)
 
     parsed = parser_init.parse_args()
     source = read_example_datalist(parsed.term_list,whole=True)
 
-    hedwig_command = "python3 hedwig3/hedwig BK/ "+parsed.n3_samples+" -o "+parsed.rule_output+" -l --beam="+parsed.beam_size
+    hedwig_command = "python3 hedwig3/hedwig BK/ "+parsed.n3_samples+" -o "+parsed.rule_output+" -l --beam="+parsed.beam_size+" --depth="+parsed.depth
 
     ## either download ontology or use own
     if parsed.download_minimal:

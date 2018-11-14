@@ -15,10 +15,10 @@ def run_infomap(infile,multiplex=False,overlapping="no"):
         call(["infomap/Infomap", "tmp/multiplex_edges.net","out/","-i multiplex","-N 500","--silent"])       
     else:
         if overlapping == "yes":
-            call(["infomap/Infomap", "tmp/monoplex_edges.net","out/","-N 500","--overlapping","--silent"])
+            call(["infomap/Infomap", "tmp/monoplex_edges.net","out/","-N 300","--overlapping"])
             
         else:
-            call(["infomap/Infomap", "tmp/monoplex_edges.net","out/","-N 500","--silent"])
+            call(["infomap/Infomap", "tmp/monoplex_edges.net","out/","-N 300"])
 
 def parse_infomap(outfile):
 
