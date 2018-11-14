@@ -3,7 +3,7 @@ import numpy as np
 import json
 import re
 from collections import defaultdict,Counter
-from .parsers import parse_gaf_file,read_termlist,read_uniprot_GO,read_topology_mappings
+from parsers import parse_gaf_file,read_termlist,read_uniprot_GO,read_topology_mappings
 
 def load_terms(tfile):
     terms = []
@@ -46,7 +46,10 @@ def WRAcc_measure_rules(topology_mapping, rules_individual,term_dataset):
     all_terms = set.union(*topology_mapping.values())
     all_wracc = []
     for annotated_community, rules in rules_individual.items():
-        unis = topology_mapping[annotated_community.split("_")[0]]
+        try:
+            unis = topology_mapping[annotated_community.split("_")[0]]
+        except:
+            unis = topology_mapping[annotated_community]
         for k,v in rules.items():            
             all_examples_target = len(unis)
             covered_target = 0
@@ -81,6 +84,21 @@ def WRAcc_measure_rules(topology_mapping, rules_individual,term_dataset):
 def get_p_term(term,term_database,all_terms):
     return len(term_database[term])/all_terms
 
+
+def ic_measure_term_list(term_list,term_dataset,all_c):
+
+    inverse_term_dataset = defaultdict(set)
+    for x,y in term_dataset.items():
+        for j in y:
+            inverse_term_dataset[j].add(x)
+    results = []
+    for en, term in enumerate(term_list):
+        pic = 0
+        total_ic=-np.log(get_p_term(term,inverse_term_dataset,all_c))
+        results.append((term,total_ic))
+        
+    return results
+        
 def ic_measure_rules(topology_mapping, rules_individual, term_dataset, all_c):
 
     inverse_term_dataset = defaultdict(set)
@@ -170,11 +188,19 @@ if __name__ == "__main__":
     elif parser.result_type == "terms":
         ruleset = convert_terms_to_rules(parser.enrichment_results)
         compute_statistics_rules(parser.input_gaf,ruleset,parser.partition_map,ftype="terms",outname = parser.enrichment_results.split("/")[-1].split(".")[0])
+
+    elif parser.result_type == "single_terms":
+
+        ## compute IC for only a list of individual terms!
+        terms = []
+        with open(parser.enrichment_results) as er:
+            for line in er:
+                line = line.strip()
+                terms.append(line)
+        print(terms)
+    term_dataset, term_database, all_counts =  read_uniprot_GO(parser.input_gaf,verbose=False)        
+    termwise_IC = ic_measure_term_list(terms,term_dataset,all_counts)
+    for pair in termwise_IC:
+        print(pair)
         
-        ## read term list
-        ## change format to rules
-        ## parse this properly
-        pass
         
-    ## read either rules or terms
-    ## output values for the table
