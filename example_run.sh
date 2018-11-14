@@ -6,7 +6,7 @@
 
 ## epigenetics - CBSSD + enrichment #######################################################
 
-python3 CBSSD.py --knowledge_graph network_datasets/intact02.gpickle --term_list term_lists/epigenetics.list --ontology_BK background_knowledge/goslim_generic.obo --output_BK experimental_evaluation_outputs/epiBK.n3 --n3_samples experimental_evaluation_outputs/epiSam_bmn.n3 --method infomap --gaf_mapping example_inputs/goa_human.gaf --community_map experimental_evaluation_outputs/partition_epigenetics_bmn_cbssd.txt --rule_output experimental_evaluation_outputs/bmn_epi_rules.json
+python3 CBSSD.py --step_size 3 --knowledge_graph network_datasets/epigenetics.gpickle --term_list term_lists/epigenetics.list --ontology_BK background_knowledge/goslim_generic.obo --output_BK experimental_evaluation_outputs/epiBK.n3 --n3_samples experimental_evaluation_outputs/epiSam_bmn.n3 --method infomap --gaf_mapping example_inputs/goa_human.gaf --community_map experimental_evaluation_outputs/partition_epigenetics_bmn_cbssd.txt --rule_output experimental_evaluation_outputs/bmn_epi_rules.json
 
 ## compute enriched terms
 #python3 term_enrichment_CBSSD.py --gaf_filename example_inputs/goa_human.gaf --partition_mappings experimental_evaluation_outputs/partition_epigenetics_bmn_cbssd.txt --outfile experimental_evaluation_outputs/bmn_epi_term_enrichment.txt

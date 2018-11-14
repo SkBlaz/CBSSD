@@ -171,6 +171,8 @@ def monoplex_community(graph,overlapping="no"):
 
     import shutil
     
+    print("Found {} partitions.".format(len(partitions)))
+    
     shutil.rmtree("out", ignore_errors=False, onerror=None)
     shutil.rmtree("tmp", ignore_errors=False, onerror=None)
     return partitions

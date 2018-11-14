@@ -1,20 +1,24 @@
 {
-  "0_community": [],
-  "5_community": [],
-  "1_community": [
-    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0005515) [cov=116, pos=114, prec=0.983, lift=1.010, pval=0.000]",
-    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0005737) [cov=42, pos=42, prec=1.000, lift=1.028, pval=0.000]",
-    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0005737), annotated_with(X, root) [cov=42, pos=42, prec=1.000, lift=1.028, pval=0.000]",
-    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0005737), annotated_with(X, http://purl.obolibrary.org/obo/GO:0005737) [cov=42, pos=42, prec=1.000, lift=1.028, pval=0.000]",
-    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0000122) [cov=41, pos=41, prec=1.000, lift=1.028, pval=0.000]",
-    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0000122), annotated_with(X, root) [cov=41, pos=41, prec=1.000, lift=1.028, pval=0.000]",
-    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0000122), annotated_with(X, http://purl.obolibrary.org/obo/GO:0000122) [cov=41, pos=41, prec=1.000, lift=1.028, pval=0.000]",
-    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0006355) [cov=44, pos=43, prec=0.977, lift=1.004, pval=0.000]",
-    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0003682) [cov=39, pos=38, prec=0.974, lift=1.001, pval=0.000]",
-    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0046872) [cov=38, pos=37, prec=0.974, lift=1.001, pval=0.000]",
-    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0045944) [cov=30, pos=30, prec=1.000, lift=1.028, pval=0.002]",
-    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0045944), annotated_with(X, root) [cov=30, pos=30, prec=1.000, lift=1.028, pval=0.002]",
-    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0045944), annotated_with(X, http://purl.obolibrary.org/obo/GO:0045944) [cov=30, pos=30, prec=1.000, lift=1.028, pval=0.002]"
+  "3_community": [],
+  "6_community": [
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0006310) [cov=13, pos=6, prec=0.462, lift=4.899, pval=0.000]",
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0006310), annotated_with(X, root) [cov=13, pos=6, prec=0.462, lift=4.899, pval=0.000]",
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0006310), annotated_with(X, http://purl.obolibrary.org/obo/GO:0005654) [cov=13, pos=6, prec=0.462, lift=4.899, pval=0.000]",
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0031011), annotated_with(X, http://purl.obolibrary.org/obo/GO:0005515) [cov=13, pos=6, prec=0.462, lift=4.899, pval=0.000]",
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0031011) [cov=14, pos=6, prec=0.429, lift=4.549, pval=0.000]",
+    "annotated_with(X, http://purl.obolibrary.org/obo/GO:0031011), annotated_with(X, root) [cov=14, pos=6, prec=0.429, lift=4.549, pval=0.000]"
   ],
-  "1065_community": []
+  "1_community": [],
+  "13_community": [],
+  "12_community": [],
+  "2_community": [],
+  "15_community": [],
+  "5_community": [],
+  "14_community": [],
+  "10_community": [],
+  "8_community": [],
+  "11_community": [],
+  "4_community": [],
+  "9_community": [],
+  "7_community": []
 }
