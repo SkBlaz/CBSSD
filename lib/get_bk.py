@@ -121,9 +121,9 @@ class make_request:
                         
                         
                 except Exception as es:
-                    print ("passing",es)
+                    print ("Walker did not find any relevant connections..")
                     json_graph = json.dumps({'nodes' : [],'links' : []})
-                    pass
+                    continue
         
                 ## save for possible further use..
                 print ("Progress: ",str(round(float(e/max_terms)*100,2)),"% complete.", nx.info(self.graph))
