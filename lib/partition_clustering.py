@@ -198,7 +198,7 @@ def identify_components(G):
             nmmap[j] = en
     return nmmap
 
-def partition_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,map_folder,method="louvain",multiplex = "no",community_size_threshold=0,overlapping="no",include_induced_neighborhood=False):
+def partition_cluster_n3(input_graph, termlist_infile,mapping_file, output_n3,map_folder,method="louvain",multiplex = "no",community_size_threshold=0,overlapping="no",include_induced_neighborhood=True):
     Gx = nx.read_gpickle(input_graph)
 
     ## split into distinct layers before doing community detection            
