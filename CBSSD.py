@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     parsed = parser_init.parse_args()
     source = read_example_datalist(parsed.term_list,whole=True)
-    neigh = args.neighbors
+    neigh = parsed.neighbors
     hedwig_command = "python3 hedwig3/hedwig BK/ "+parsed.n3_samples+" -o "+parsed.rule_output+" -l --beam="+parsed.beam_size+" --depth="+parsed.depth
 
     ## either download ontology or use own
