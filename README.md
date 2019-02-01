@@ -42,24 +42,20 @@ python3 CBSSD.py --step_size 10 --knowledge_graph network_datasets/epigenetics.g
 # Citation
 
 ```
-@InProceedings{10.1007/978-3-319-78680-3_13,
+@Article{Škrlj2019,
 author="{\v{S}}krlj, Bla{\v{z}}
 and Kralj, Jan
-and Vavpeti{\v{c}}, An{\v{z}}e
 and Lavra{\v{c}}, Nada",
-editor="Appice, Annalisa
-and Loglisci, Corrado
-and Manco, Giuseppe
-and Masciari, Elio
-and Ras, Zbigniew W.",
-title="Community-Based Semantic Subgroup Discovery",
-booktitle="New Frontiers in Mining Complex Patterns",
-year="2018",
-publisher="Springer International Publishing",
-address="Cham",
-pages="182--196",
-abstract="Modern data mining algorithms frequently need to address learning from heterogeneous data and knowledge sources, including ontologies. A data mining task in which ontologies are used as background knowledge is referred to as semantic data mining. A special form of semantic data mining is semantic subgroup discovery, where ontology terms are used in subgroup describing rules. We propose to enhance ontology-based subgroup identification by Community-Based Semantic Subgroup Discovery (CBSSD), taking into account also the structural properties of complex networks related to the studied phenomenon. The application of the developed CBSSD approach is demonstrated on two use cases from the field of molecular biology.",
-isbn="978-3-319-78680-3"
+title="CBSSD: community-based semantic subgroup discovery",
+journal="Journal of Intelligent Information Systems",
+year="2019",
+month="Jan",
+day="26",
+abstract="Modern data mining algorithms frequently need to address the task of learning from heterogeneous data, including various sources of background knowledge. A data mining task where ontologies are used as background knowledge in data analysis is referred to as semantic data mining. A specific semantic data mining task is semantic subgroup discovery: a rule learning approach enabling ontology terms to be used in subgroup descriptions learned from class labeled data. This paper presents Community-Based Semantic Subgroup Discovery (CBSSD), a novel approach that advances ontology-based subgroup identification by exploiting the structural properties of induced complex networks related to the studied phenomenon. Following the idea of multi-view learning, using different sources of information to obtain better models, the CBSSD approach can leverage different types of nodes of the induced complex network, simultaneously using information from multiple levels of a biological system. The approach was tested on ten data sets consisting of genes related to complex diseases, as well as core metabolic processes. The experimental results demonstrate that the CBSSD approach is scalable, applicable to large complex networks, and that it can be used to identify significant combinations of terms, which can not be uncovered by contemporary term enrichment analysis approaches.",
+issn="1573-7675",
+doi="10.1007/s10844-019-00545-0",
+url="https://doi.org/10.1007/s10844-019-00545-0"
 }
+
 
 ```
